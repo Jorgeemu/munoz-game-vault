@@ -6,7 +6,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Muñoz | Game Tracker</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body { 
             background-color: #0f172a; 
             color: #f1f5f9; 
@@ -15,7 +15,7 @@
         .card { 
             background-color: #1e293b;
             border: 1px solid #334155;
-            border-radius: 8px;
+            border-radius: 12px;
         }
         input, select {
             background-color: #0f172a !important;
@@ -25,30 +25,43 @@
         input:focus, select:focus {
             border-color: #38bdf8 !important;
             outline: none;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+        .btn-primary {
+            background-color: #0284c7;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #0ea5e9;
+            transform: translateY(-1px);
+        }
+        .btn-primary:disabled {
+            background-color: #334155;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body class="p-4 md:p-10">
-    <header class="max-w-5xl mx-auto mb-10 border-b border-slate-700 pb-6 flex justify-between items-center">
+    <header class="max-w-5xl mx-auto mb-10 border-b border-slate-800 pb-8 flex justify-between items-center">
         <div>
-            <h1 class="text-3xl font-bold text-sky-400">Game Tracker</h1>
-            <p class="text-sm text-slate-400">Registro de victorias y ranking personal</p>
+            <h1 class="text-3xl font-bold tracking-tight text-white">Game Tracker</h1>
+            <p class="text-slate-400 mt-1">Arquitecto: J. Muñoz | Ciudad de México</p>
         </div>
-        <div class="text-right">
-            <span class="text-xs font-mono text-slate-500 uppercase">Versión 1.2.0</span>
+        <div class="text-right hidden sm:block">
+            <span class="px-3 py-1 bg-slate-800 rounded-full text-[10px] font-bold text-slate-400 uppercase tracking-widest border border-slate-700">v1.2.5 Stable</span>
         </div>
     </header>
 
     <main class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <section class="lg:col-span-1 card p-6 shadow-xl">
-            <h2 class="text-lg font-bold mb-6 text-white flex items-center">
-                📝 Registrar Partida
+        <section class="lg:col-span-1 card p-6 shadow-2xl">
+            <h2 class="text-lg font-semibold mb-6 flex items-center text-white">
+                <span class="mr-2">📝</span> Nuevo Registro
             </h2>
             <div class="space-y-4">
                 <div>
-                    <label class="text-xs text-slate-400 uppercase font-semibold">Juego</label>
-                    <select id="gameSelect" class="w-full p-2.5 mt-1 rounded">
+                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Juego</label>
+                    <select id="gameSelect" class="w-full p-3 mt-1 rounded-lg text-sm">
                         <optgroup label="Euros / Estrategia">
                             <option>Ark Nova</option>
                             <option>The White Castle</option>
@@ -65,48 +78,49 @@
                             <option>Castle Combo</option>
                             <option>Scout</option>
                             <option>Trio</option>
+                            <option>The Vale of Eternity</option>
                         </optgroup>
                     </select>
                 </div>
 
                 <div>
-                    <label class="text-xs text-slate-400 uppercase font-semibold">Ganador</label>
-                    <input type="text" id="winner" placeholder="Nombre del ganador" class="w-full p-2.5 mt-1 rounded text-sm">
+                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Ganador</label>
+                    <input type="text" id="winner" placeholder="Nombre del ganador" class="w-full p-3 mt-1 rounded-lg text-sm">
                 </div>
 
                 <div>
-                    <label class="text-xs text-slate-400 uppercase font-semibold">Puntaje Final</label>
-                    <input type="number" id="score" placeholder="Puntos obtenidos" class="w-full p-2.5 mt-1 rounded text-sm">
+                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Puntaje Final</label>
+                    <input type="number" id="score" placeholder="Ej: 125" class="w-full p-3 mt-1 rounded-lg text-sm">
                 </div>
 
                 <div>
-                    <label class="text-xs text-slate-400 uppercase font-semibold">Oponentes</label>
-                    <input type="text" id="opponents" placeholder="Claudia, Alan, etc." class="w-full p-2.5 mt-1 rounded text-sm">
+                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Oponentes</label>
+                    <input type="text" id="opponents" placeholder="Ej: Claudia, Alan, Steve" class="w-full p-3 mt-1 rounded-lg text-sm">
                 </div>
 
-                <button onclick="logGame(this)" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 px-4 rounded transition-colors mt-2">
+                <button id="saveBtn" onclick="logGame()" class="w-full btn-primary text-white font-bold py-4 rounded-lg mt-2 shadow-lg">
                     Guardar Resultado
                 </button>
             </div>
         </section>
 
-        <section class="lg:col-span-2 card p-6 shadow-xl">
-            <h2 class="text-lg font-bold mb-6 text-white flex items-center">
-                🏆 Tabla de Posiciones
+        <section class="lg:col-span-2 card p-6 shadow-2xl">
+            <h2 class="text-lg font-semibold mb-6 flex items-center text-white">
+                <span class="mr-2">🏆</span> Ranking Global
             </h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead>
-                        <tr class="text-slate-500 text-[11px] uppercase tracking-wider border-b border-slate-700">
-                            <th class="pb-3">Posición</th>
-                            <th class="pb-3">Jugador</th>
-                            <th class="pb-3 text-center">Victorias</th>
-                            <th class="pb-3 text-right">Puntos (ELO)</th>
+                        <tr class="text-slate-500 text-[11px] uppercase tracking-widest border-b border-slate-800">
+                            <th class="pb-4">Posición</th>
+                            <th class="pb-4">Jugador</th>
+                            <th class="pb-4 text-center">Victorias</th>
+                            <th class="pb-4 text-right">Puntos (ELO)</th>
                         </tr>
                     </thead>
                     <tbody id="rankingBody">
                         <tr>
-                            <td colspan="4" class="py-10 text-center text-slate-500 text-sm italic">Cargando datos...</td>
+                            <td colspan="4" class="py-12 text-center text-slate-500 text-sm">Cargando ranking central...</td>
                         </tr>
                     </tbody>
                 </table>
@@ -114,29 +128,30 @@
         </section>
     </main>
 
-    <footer class="max-w-5xl mx-auto mt-16 text-[11px] text-slate-500 flex justify-between border-t border-slate-800 pt-6">
+    <footer class="max-w-5xl mx-auto mt-16 text-[10px] text-slate-600 flex justify-between border-t border-slate-900 pt-8 uppercase tracking-widest">
         <span>© 2026 Muñoz Game Architect</span>
-        <span class="font-mono">Status: Connected to Google Sheets</span>
+        <span>No Cooperative Mode Detected</span>
     </footer>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbxEwpHv4qbeThPPLArig7kQsEtn-N9jaTXxx9yWtFT_bezONNpAqmN5TyW5RvtxOMJ8/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbz3XKF8OZ0HdExHlLt8GepMZC4pJTuGTpkOUk0K-ZiSt5xbsScYrFEjPdgqkUbRXTxt/exec";
 
-        async function logGame(btn) {
+        async function logGame() {
+            const btn = document.getElementById('saveBtn');
             const winner = document.getElementById('winner').value;
             const score = document.getElementById('score').value;
             const game = document.getElementById('gameSelect').value;
             const opponents = document.getElementById('opponents').value;
 
             if(!winner || !score || !opponents) {
-                alert("Por favor completa todos los campos (Ganador, Puntaje y Oponentes).");
+                alert("Error: Completa todos los campos antes de registrar.");
                 return;
             }
 
-            btn.innerText = "Guardando...";
+            btn.innerText = "Sincronizando...";
             btn.disabled = true;
 
-            const data = {
+            const payload = {
                 game: game,
                 winner: winner,
                 score: score,
@@ -144,22 +159,20 @@
             };
 
             try {
-                // El modo 'no-cors' envía los datos aunque no reciba respuesta confirmada del navegador
+                // Enviar datos
                 await fetch(API_URL, {
                     method: 'POST',
                     mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify(payload)
                 });
                 
-                alert("Resultado registrado correctamente.");
+                alert("Victoria de " + winner + " registrada correctamente.");
                 location.reload();
             } catch (error) {
-                console.error("Error:", error);
-                alert("Hubo un error al conectar con el servidor.");
-            } finally {
-                btn.innerText = "Guardar Resultado";
+                console.error("Error de red:", error);
+                alert("Error crítico al conectar con el servidor.");
                 btn.disabled = false;
+                btn.innerText = "Guardar Resultado";
             }
         }
 
@@ -171,37 +184,41 @@
                 const data = await response.json();
                 
                 if(!data || data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="py-10 text-center text-slate-600 text-sm">No hay partidas registradas aún.</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="4" class="py-12 text-center text-slate-500 text-sm italic">Sin registros de combate actuales.</td></tr>';
                     return;
                 }
 
+                // Procesar victorias
                 const stats = {};
-                data.forEach(row => {
-                    const player = row[2]; // Ganador está en la columna C (índice 2)
-                    if(player) stats[player] = (stats[player] || 0) + 1;
+                data.forEach(entry => {
+                    const name = entry.ganador;
+                    if(name) stats[name] = (stats[name] || 0) + 1;
                 });
 
-                const sortedPlayers = Object.entries(stats).sort((a, b) => b[1] - a[1]);
+                // Ordenar de mayor a menor
+                const ranking = Object.entries(stats).sort((a, b) => b[1] - a[1]);
 
-                tbody.innerHTML = sortedPlayers.map(([player, wins], index) => {
+                tbody.innerHTML = ranking.map(([player, wins], index) => {
                     const isJorge = player.toLowerCase() === 'jorge';
                     const elo = 1000 + (wins * 50);
+                    
                     return `
-                        <tr class="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors">
-                            <td class="py-4 font-mono text-slate-500">#${index + 1}</td>
-                            <td class="py-4">
+                        <tr class="border-b border-slate-800/40 hover:bg-slate-800/20 transition-all">
+                            <td class="py-5 font-mono text-slate-500 text-xs">#0${index + 1}</td>
+                            <td class="py-5">
                                 <span class="font-bold ${isJorge ? 'text-sky-400' : 'text-slate-200'}">
                                     ${player}
                                 </span>
                             </td>
-                            <td class="py-4 text-center font-bold text-emerald-400">${wins}</td>
-                            <td class="py-4 text-right font-mono text-slate-400">${elo}</td>
+                            <td class="py-5 text-center font-bold text-emerald-500">${wins}</td>
+                            <td class="py-5 text-right font-mono text-slate-400 text-sm">${elo}</td>
                         </tr>
                     `;
                 }).join('');
 
             } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="4" class="py-10 text-center text-red-400 text-sm uppercase">Error de conexión con el Ranking.</td></tr>';
+                console.error("Error de carga:", e);
+                tbody.innerHTML = '<tr><td colspan="4" class="py-12 text-center text-red-400 text-xs uppercase tracking-widest">Error de sincronización con la base de datos.</td></tr>';
             }
         }
 
