@@ -1,48 +1,214 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Muñoz Game Tracker | Alpha Access</title>
+    <title>MUÑOZ | COMBAT TRACKER</title>
     <style>
-        body { background-color: #0b111a; color: #e2e8f0; font-family: 'Courier New', monospace; }
-        .neon-border { border: 1px solid #00ff9f; box-shadow: 0 0 10px #00ff9f; }
-        .glitch-text { text-shadow: 2px 2px #ff0055; }
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        body { 
+            background-color: #0b111a; 
+            color: #e2e8f0; 
+            font-family: 'JetBrains Mono', monospace; 
+        }
+        .neon-border { 
+            border: 1px solid #00ff9f; 
+            box-shadow: 0 0 15px rgba(0, 255, 159, 0.2); 
+        }
+        .glitch-text { 
+            text-shadow: 2px 2px #ff0055; 
+            letter-spacing: -1px;
+        }
+        select, input {
+            background-color: #1a202c !important;
+            border: 1px solid #2d3748 !important;
+            color: #00ff9f !important;
+        }
+        .loading-blink { animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
-<body class="p-8">
-    <header class="mb-10 border-b border-cyan-500 pb-4">
-        <h1 class="text-4xl font-bold glitch-text uppercase tracking-tighter text-cyan-400">Combat Tracker v1.0</h1>
-        <p class="text-xs text-cyan-700">User: J.Muñoz | Status: Dominating</p>
+<body class="p-4 md:p-10">
+    <header class="max-w-6xl mx-auto mb-10 border-b-2 border-cyan-500 pb-6 flex justify-between items-end">
+        <div>
+            <h1 class="text-4xl md:text-6xl font-extrabold glitch-text uppercase tracking-tighter text-cyan-400">Combat Tracker</h1>
+            <p class="text-xs text-cyan-700 mt-2">ARCHITECT: J. MUÑOZ | LOCATION: CDMX | SYSTEM: STABLE</p>
+        </div>
+        <div class="text-right hidden md:block">
+            <span class="text-[10px] text-pink-500 block">ENLACE NEURAL ACTIVO</span>
+            <span class="text-xl font-bold text-white">V1.1.0</span>
+        </div>
     </header>
 
-    <main class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <section class="neon-border p-6 bg-black/50">
-            <h2 class="text-xl mb-4 text-pink-500 font-bold tracking-widest uppercase">Registrar Log</h2>
-            <div class="space-y-4">
-                <select id="gameSelect" class="w-full bg-gray-900 border border-gray-700 p-2">
-                    <option>Ark Nova</option>
-                    <option>The White Castle</option>
-                    <option>7 Wonders Duel</option>
-                    <option>Mindbug</option>
-                </select>
-                <input type="text" id="winner" placeholder="Ganador (Dominante)" class="w-full bg-gray-900 border border-gray-700 p-2">
-                <input type="number" id="score" placeholder="Puntaje Final" class="w-full bg-gray-900 border border-gray-700 p-2">
-                <button onclick="logGame()" class="w-full bg-cyan-600 hover:bg-cyan-400 text-black font-bold py-2 transition-all uppercase">Inyectar Datos</button>
+    <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <section class="lg:col-span-1 neon-border p-6 bg-black/40 backdrop-blur-md">
+            <h2 class="text-xl mb-6 text-pink-500 font-bold tracking-widest uppercase flex items-center">
+                <span class="mr-2">⚡</span> Registrar Log
+            </h2>
+            <div class="space-y-5">
+                <div>
+                    <label class="text-[10px] text-gray-500 uppercase">Seleccionar Sistema (Juego)</label>
+                    <select id="gameSelect" class="w-full p-3 mt-1 outline-none focus:ring-1 focus:ring-cyan-500">
+                        <optgroup label="Euros / Estrategia">
+                            <option>Ark Nova</option>
+                            <option>The White Castle</option>
+                            <option>Terraforming Mars</option>
+                            <option>Rebirth</option>
+                        </optgroup>
+                        <optgroup label="Duelos 1v1">
+                            <option>Marvel Dice Throne</option>
+                            <option>Mindbug</option>
+                            <option>7 Wonders Duel</option>
+                            <option>Ajedrez</option>
+                        </optgroup>
+                        <optgroup label="Rápidos / Fillers">
+                            <option>Castle Combo</option>
+                            <option>Scout</option>
+                            <option>The Vale of Eternity</option>
+                            <option>Trio</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-gray-500 uppercase">Operativo Dominante (Ganador)</label>
+                    <input type="text" id="winner" placeholder="Ej. Jorge, Claudia, Alan..." class="w-full p-3 mt-1 outline-none focus:ring-1 focus:ring-cyan-500">
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-gray-500 uppercase">Puntaje / Eficiencia</label>
+                    <input type="number" id="score" placeholder="Puntos finales" class="w-full p-3 mt-1 outline-none focus:ring-1 focus:ring-cyan-500">
+                </div>
+
+                <button onclick="logGame(this)" class="w-full bg-cyan-600 hover:bg-cyan-400 text-black font-extrabold py-4 transition-all uppercase tracking-tighter">
+                    Inyectar Datos al Registro
+                </button>
             </div>
         </section>
 
-        <section class="neon-border p-6 bg-black/50">
-            <h2 class="text-xl mb-4 text-cyan-400 font-bold tracking-widest uppercase">Top Operatives</h2>
-            <table class="w-full text-left">
-                <thead class="text-cyan-800 text-sm">
-                    <tr><th>Player</th><th>W/L</th><th>ELO</th></tr>
-                </thead>
-                <tbody id="rankingBody">
-                    <tr><td>Jorge</td><td>15-0</td><td>2400</td></tr>
-                    <tr class="opacity-50 text-gray-500"><td>Alan</td><td>8-7</td><td>1800</td></tr>
-                </tbody>
-            </table>
+        <section class="lg:col-span-2 border border-gray-800 p-6 bg-black/20">
+            <h2 class="text-xl mb-6 text-cyan-400 font-bold tracking-widest uppercase flex items-center">
+                <span class="mr-2">📊</span> Ranking de Operativos
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-gray-600 text-[10px] uppercase border-b border-gray-800">
+                            <th class="pb-3">Rango</th>
+                            <th class="pb-3">Operativo</th>
+                            <th class="pb-3">Victorias</th>
+                            <th class="pb-3">ELO Proyectado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rankingBody">
+                        <tr>
+                            <td colspan="4" class="py-10 text-center text-gray-500 italic loading-blink text-xs">Sincronizando con el servidor central...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
     </main>
+
+    <footer class="max-w-6xl mx-auto mt-20 text-[10px] text-gray-700 flex justify-between border-t border-gray-900 pt-4">
+        <span>© 2026 MUÑOZ GAME ARCHITECT - NO COOPERATIVE MODE DETECTED</span>
+        <span>ENCRYPTED_CONNECTION: VERCEL_DB_LINK</span>
+    </footer>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbxVD-Xsflhp_q-cdFOcXjqWN2So-zwOpwPfPRLKFCRsNJeN6eW0wvOEYGOg_152jNHj/exec";
+
+        // REGISTRAR PARTIDA
+        async function logGame(btn) {
+            const winner = document.getElementById('winner').value;
+            const score = document.getElementById('score').value;
+            const game = document.getElementById('gameSelect').value;
+
+            if(!winner || !score) {
+                alert("ERROR: Datos incompletos. Se requiere identificación de ganador y puntaje.");
+                return;
+            }
+
+            const originalText = btn.innerText;
+            btn.innerText = "INYECTANDO...";
+            btn.disabled = true;
+
+            const data = {
+                game: game,
+                winner: winner,
+                score: score,
+                opponents: "Claudia, Alan, Steve, Marisol" // Placeholder dinámico
+            };
+
+            try {
+                // POST a Google Apps Script
+                await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                alert("LOG: Victoria de " + winner + " registrada con éxito.");
+                location.reload();
+            } catch (error) {
+                console.error("Fallo de inyección:", error);
+                alert("CRITICAL ERROR: No se pudo conectar con la base de datos.");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // CARGAR RANKING DESDE GOOGLE SHEETS
+        async function loadRankings() {
+            const tbody = document.getElementById('rankingBody');
+            
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                
+                if(!data || data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" class="py-10 text-center text-gray-600 uppercase text-[10px]">Sin datos de combate registrados.</td></tr>';
+                    return;
+                }
+
+                const stats = {};
+                data.forEach(row => {
+                    const player = row[2]; // Columna Ganador
+                    stats[player] = (stats[player] || 0) + 1;
+                });
+
+                // Ordenar por victorias
+                const sortedPlayers = Object.entries(stats).sort((a, b) => b[1] - a[1]);
+
+                tbody.innerHTML = sortedPlayers.map(([player, wins], index) => {
+                    const isJorge = player.toLowerCase() === 'jorge';
+                    const elo = 1000 + (wins * 50);
+                    return `
+                        <tr class="${isJorge ? 'bg-cyan-900/10' : ''} border-b border-gray-900/50 hover:bg-white/5 transition-colors">
+                            <td class="py-4 font-bold text-gray-500">#0${index + 1}</td>
+                            <td class="py-4">
+                                <span class="${isJorge ? 'text-cyan-400 font-bold' : 'text-white'}">
+                                    ${player.toUpperCase()}
+                                </span>
+                                ${isJorge ? '<span class="ml-2 text-[8px] bg-cyan-500 text-black px-1">ALPHA</span>' : ''}
+                            </td>
+                            <td class="py-4 text-pink-500 font-bold">${wins}</td>
+                            <td class="py-4 text-gray-400 font-mono">${elo} <span class="text-[8px] text-gray-600">PTS</span></td>
+                        </tr>
+                    `;
+                }).join('');
+
+            } catch (e) {
+                console.error("Error al leer ranking:", e);
+                tbody.innerHTML = '<tr><td colspan="4" class="py-10 text-center text-red-500 uppercase text-[10px]">Error al sincronizar ranking.</td></tr>';
+            }
+        }
+
+        window.onload = loadRankings;
+    </script>
 </body>
 </html>
