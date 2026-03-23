@@ -4,39 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Muñoz | Apex Predator v1.6</title>
+    <title>Muñoz | Apex Predator v1.6.1</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body { background-color: #0f172a; color: #f1f5f9; font-family: 'Inter', sans-serif; }
         .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; }
         input, .search-results { background-color: #0f172a !important; border: 1px solid #475569 !important; }
-        .btn-primary { background-color: #0284c7; transition: all 0.2s; cursor: pointer; }
+        .btn-primary { background-color: #0284c7; transition: 0.2s; cursor: pointer; }
         .btn-primary:hover { background-color: #0ea5e9; }
-        .badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase; }
-        .badge-submission { background-color: #991b1b; color: white; }
-        .op-btn { border: 1px solid #334155; transition: 0.2s; }
+        .badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
         .op-btn.active { background-color: #0ea5e9; border-color: #38bdf8; color: white; }
     </style>
 </head>
 <body class="p-4 md:p-8">
     <header class="max-w-7xl mx-auto mb-8 border-b border-slate-800 pb-6 flex justify-between items-end">
         <div>
-            <h1 class="text-3xl font-bold text-white tracking-tight">Muñoz Game Vault <span class="text-sky-500 text-sm ml-2 font-mono uppercase">v1.6.0 APEX</span></h1>
+            <h1 class="text-3xl font-bold text-white tracking-tight">Muñoz Game Vault <span class="text-sky-500 text-sm ml-2 font-mono uppercase">v1.6.1</span></h1>
             <p id="seasonLabel" class="text-emerald-400 text-xs font-bold uppercase tracking-widest mt-1">Temporada: Cargando...</p>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
         <section class="lg:col-span-4 space-y-6">
             <div class="card p-6 shadow-2xl">
                 <h2 class="text-lg font-semibold mb-6 text-white flex items-center">📝 Nuevo Log de Combate</h2>
                 <div class="space-y-4">
                     <div class="relative">
                         <label class="text-[10px] font-bold text-slate-500 uppercase">Sistema / Juego</label>
-                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="Buscar en los 61 juegos..." autocomplete="off" class="w-full p-3 mt-1 rounded-lg text-sm outline-none focus:border-sky-500">
+                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="Buscar o escribir juego nuevo..." autocomplete="off" class="w-full p-3 mt-1 rounded-lg text-sm outline-none focus:border-sky-500">
                         <div id="searchResults" class="hidden absolute z-20 w-full mt-1 max-h-48 overflow-y-auto rounded-lg border border-slate-700 bg-slate-900 shadow-xl"></div>
-                        <input type="hidden" id="selectedGame">
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -57,14 +53,14 @@
 
                     <div>
                         <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Oponentes Sometidos</label>
-                        <div id="opContainer" class="flex flex-wrap gap-2">
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800">Claudia</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800">Alan</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800">Steve</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800">Marisol</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800">Ivan</button>
+                        <div id="opContainer" class="flex flex-wrap gap-2 mb-3">
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800 border border-slate-700">Jorge</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800 border border-slate-700">Claudia</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800 border border-slate-700">Alan</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800 border border-slate-700">Marisol</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800 border border-slate-700">Ivan</button>
                         </div>
-                        <input type="hidden" id="opponentsFinal">
+                        <input type="text" id="otherOps" placeholder="Otros oponentes..." class="w-full p-3 rounded-lg text-sm outline-none bg-slate-900 border border-slate-700">
                     </div>
 
                     <button id="saveBtn" onclick="logGame()" class="w-full btn-primary text-white font-bold py-4 rounded-lg mt-2 shadow-lg uppercase tracking-widest text-xs">Inyectar Victoria</button>
@@ -78,16 +74,15 @@
     </main>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbz3XKF8OZ0HdExHlLt8GepMZC4pJTuGTpkOUk0K-ZiSt5xbsScYrFEjPdgqkUbRXTxt/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbwTBSlsPWgNL26KThTrfLXR1YaByMifinJL56uj73I4UB7fdU3KKf9fLIoHWslGoxTb/exec";
 
-        // CONFIGURACIÓN DE TEMPORADA BIMESTRAL
         const getSeason = () => {
-            const date = new Date(); // En producción usaría la fecha actual: 23 Mar 2026
-            const month = date.getMonth(); // 0-11
+            const date = new Date();
+            const month = date.getMonth(); 
             const year = date.getFullYear();
             const bimonthly = Math.floor(month / 2) + 1;
             const names = ["Ene-Feb", "Mar-Abr", "May-Jun", "Jul-Ago", "Sep-Oct", "Nov-Dic"];
-            return { id: `${year}-${bimonthly}`, label: `Temporada ${bimonthly}: ${names[month === 2 ? 1 : Math.floor(month/2)]} ${year}`, startMonth: Math.floor(month/2)*2 };
+            return { id: `${year}-${bimonthly}`, label: `Temporada ${bimonthly}: ${names[bimonthly-1]} ${year}`, startMonth: Math.floor(month/2)*2 };
         };
 
         const currentSeason = getSeason();
@@ -95,27 +90,12 @@
 
         const ALL_GAMES = [
             {n: "Ark Nova", c: "Estrategia"}, {n: "Terraforming Mars", c: "Estrategia"}, {n: "The White Castle", c: "Estrategia"}, 
-            {n: "The White Castle: Matcha", c: "Estrategia"}, {n: "Coffee Rush", c: "Estrategia"}, {n: "Rebirth", c: "Estrategia"}, 
-            {n: "Splendor", c: "Estrategia"}, {n: "Cities", c: "Estrategia"}, {n: "Mycelia", c: "Estrategia"}, {n: "Challengers!", c: "Estrategia"},
-            {n: "Marvel Dice Throne", c: "Duelos"}, {n: "7 Wonders Duel", c: "Duelos"}, {n: "Mindbug", c: "Duelos"}, 
-            {n: "Yokai Sketch", c: "Duelos"}, {n: "Ajedrez", c: "Duelos"}, {n: "Stratego", c: "Duelos"},
-            {n: "Castle Combo", c: "Rápidos"}, {n: "Trio", c: "Rápidos"}, {n: "Scout", c: "Rápidos"}, 
-            {n: "The Vale of Eternity", c: "Rápidos"}, {n: "Sushi Go", c: "Rápidos"},
-            {n: "Hitster", c: "Party"}, {n: "Virus 1", c: "Party"}, {n: "Virus 2", c: "Party"}, 
-            {n: "Exploding Kittens", c: "Party"}, {n: "Código Secreto", c: "Party"}, {n: "Dixit", c: "Party"}
-            // ... (Se asume la lista completa de 61 mapeada internamente)
+            {n: "The White Castle: Matcha", c: "Estrategia"}, {n: "Coffee Rush", c: "Estrategia"}, {n: "Mindbug", c: "Duelos"}, 
+            {n: "7 Wonders Duel", c: "Duelos"}, {n: "Marvel Dice Throne", c: "Duelos"}, {n: "Trio", c: "Rápidos"}, {n: "Scout", c: "Rápidos"}
+            // El buscador permitirá escribir cualquier otro nombre
         ];
 
-        // UI HELPERS
-        function toggleOp(btn) {
-            btn.classList.toggle('active');
-            updateOps();
-        }
-
-        function updateOps() {
-            const actives = Array.from(document.querySelectorAll('.op-btn.active')).map(b => b.innerText);
-            document.getElementById('opponentsFinal').value = actives.join(', ');
-        }
+        function toggleOp(btn) { btn.classList.toggle('active'); }
 
         function filterGames() {
             const input = document.getElementById('gameSearch').value.toLowerCase();
@@ -128,61 +108,71 @@
 
         function selectGame(name) {
             document.getElementById('gameSearch').value = name;
-            document.getElementById('selectedGame').value = name;
             document.getElementById('searchResults').classList.add('hidden');
         }
 
         async function logGame() {
             const btn = document.getElementById('saveBtn');
+            const actives = Array.from(document.querySelectorAll('.op-btn.active')).map(b => b.innerText);
+            const others = document.getElementById('otherOps').value;
+            const opponents = [actives.join(', '), others].filter(x => x).join(', ');
+
             const data = {
-                game: document.getElementById('selectedGame').value || document.getElementById('gameSearch').value,
+                game: document.getElementById('gameSearch').value,
                 winner: document.getElementById('winner').value,
                 score: document.getElementById('score').value,
                 margin: document.getElementById('margin').value || 0,
-                opponents: document.getElementById('opponentsFinal').value
+                opponents: opponents
             };
 
-            if(!data.winner || !data.score) { alert("Error: Faltan datos críticos."); return; }
+            if(!data.game || !data.winner) { alert("Error: Faltan datos."); return; }
             btn.innerText = "INYECTANDO..."; btn.disabled = true;
 
             try {
-                // El Apps Script ya está preparado para recibir 'margin' en la columna E (se ajusta solo)
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                alert("Victoria registrada. Sometimiento verificado.");
+                alert("Victoria registrada.");
                 location.reload();
-            } catch (e) { alert("Error de red."); btn.disabled = false; }
+            } catch (e) { alert("Error."); btn.disabled = false; }
         }
 
         async function loadRankings() {
             const container = document.getElementById('rankingsContainer');
             try {
                 const response = await fetch(API_URL);
-                let data = await response.json();
+                const data = await response.json();
                 container.innerHTML = "";
 
-                // FILTRO BIMESTRAL: Solo registros del mes actual o anterior del mismo bimestre
-                const filteredData = data.filter(entry => {
-                    const entryDate = new Date(entry.timestamp || new Date());
-                    return entryDate.getMonth() >= currentSeason.startMonth && entryDate.getFullYear() === 2026;
-                });
-
                 const stats = { "Estrategia": {}, "Duelos": {}, "Rápidos": {}, "Party": {} };
-                const achievements = {}; // Jugador -> {wins: 0, submissions: 0, types: {}}
 
-                filteredData.forEach(entry => {
+                data.forEach(entry => {
+                    // Filtrar por temporada 2026
+                    const date = new Date(entry.timestamp);
+                    if(date.getFullYear() !== 2026 || date.getMonth() < currentSeason.startMonth) return;
+
                     const gameObj = ALL_GAMES.find(g => g.n === entry.juego) || {c: "Estrategia"};
                     const winner = entry.ganador;
-                    const margin = parseInt(entry.score) || 0; // Usando score como aproximado si margin no existe en rows viejas
-
-                    if(winner) {
-                        stats[gameObj.c][winner] = (stats[gameObj.c][winner] || 0) + 1;
-                        
-                        // Procesar Logros
-                        if(!achievements[winner]) achievements[winner] = {wins: 0, subs: 0, cats: {}};
-                        achievements[winner].wins++;
-                        if(entry.margin >= 30) achievements[winner].subs++;
-                        achievements[winner].cats[gameObj.c] = (achievements[winner].cats[gameObj.c] || 0) + 1;
-                    }
+                    if(winner) stats[gameObj.c][winner] = (stats[gameObj.c][winner] || 0) + 1;
                 });
 
-                Object.keys(
+                Object.keys(stats).forEach(cat => {
+                    const players = Object.entries(stats[cat]).sort((a,b) => b[1] - a[1]);
+                    container.innerHTML += `
+                        <div class="card p-6 shadow-xl border-l-4 border-sky-500">
+                            <h2 class="text-sm font-bold text-slate-500 uppercase mb-4 tracking-widest">${cat}</h2>
+                            <div class="space-y-4">
+                                ${players.map(([name, wins], i) => `
+                                    <div class="flex justify-between items-center ${i===0 ? 'bg-sky-500/5 p-2 rounded' : ''}">
+                                        <span class="font-bold text-sm ${name.toLowerCase()==='jorge'?'text-sky-400':'text-slate-200'}">${i===0?'👑 ':''}${name}</span>
+                                        <span class="font-mono font-bold text-emerald-400 text-sm">${wins} WINS</span>
+                                    </div>
+                                `).join('') || '<p class="text-xs text-slate-600 italic">Sin actividad.</p>'}
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (e) { container.innerHTML = "<p class='text-red-500'>Error de sincronización.</p>"; }
+        }
+        window.onload = loadRankings;
+    </script>
+</body>
+</html>
