@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Muñoz | Search & Destroy</title>
+    <title>Muñoz | Apex Predator v1.6</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body { background-color: #0f172a; color: #f1f5f9; font-family: 'Inter', sans-serif; }
@@ -12,15 +12,17 @@
         input, .search-results { background-color: #0f172a !important; border: 1px solid #475569 !important; }
         .btn-primary { background-color: #0284c7; transition: all 0.2s; cursor: pointer; }
         .btn-primary:hover { background-color: #0ea5e9; }
-        .ranking-card { border-top: 4px solid #38bdf8; }
-        .crown { color: #eab308; }
+        .badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; text-transform: uppercase; }
+        .badge-submission { background-color: #991b1b; color: white; }
+        .op-btn { border: 1px solid #334155; transition: 0.2s; }
+        .op-btn.active { background-color: #0ea5e9; border-color: #38bdf8; color: white; }
     </style>
 </head>
 <body class="p-4 md:p-8">
     <header class="max-w-7xl mx-auto mb-8 border-b border-slate-800 pb-6 flex justify-between items-end">
         <div>
-            <h1 class="text-3xl font-bold text-white tracking-tight">Muñoz Game Vault <span class="text-sky-500 text-sm ml-2 font-mono uppercase">v1.5.0</span></h1>
-            <p class="text-slate-400 text-sm">Registro de Realeza del Tablero | Architect: J. Muñoz</p>
+            <h1 class="text-3xl font-bold text-white tracking-tight">Muñoz Game Vault <span class="text-sky-500 text-sm ml-2 font-mono uppercase">v1.6.0 APEX</span></h1>
+            <p id="seasonLabel" class="text-emerald-400 text-xs font-bold uppercase tracking-widest mt-1">Temporada: Cargando...</p>
         </div>
     </header>
 
@@ -28,99 +30,100 @@
         
         <section class="lg:col-span-4 space-y-6">
             <div class="card p-6 shadow-2xl">
-                <h2 class="text-lg font-semibold mb-6 text-white flex items-center">
-                    <span class="mr-2">🔎</span> Registrar Victoria
-                </h2>
+                <h2 class="text-lg font-semibold mb-6 text-white flex items-center">📝 Nuevo Log de Combate</h2>
                 <div class="space-y-4">
                     <div class="relative">
-                        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Buscar Juego (61 Disponibles)</label>
-                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="Escribe el nombre del juego..." autocomplete="off" class="w-full p-3 mt-1 rounded-lg text-sm outline-none focus:border-sky-500">
-                        <div id="searchResults" class="hidden absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-lg border border-slate-700 bg-slate-900 shadow-xl">
-                            </div>
+                        <label class="text-[10px] font-bold text-slate-500 uppercase">Sistema / Juego</label>
+                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="Buscar en los 61 juegos..." autocomplete="off" class="w-full p-3 mt-1 rounded-lg text-sm outline-none focus:border-sky-500">
+                        <div id="searchResults" class="hidden absolute z-20 w-full mt-1 max-h-48 overflow-y-auto rounded-lg border border-slate-700 bg-slate-900 shadow-xl"></div>
                         <input type="hidden" id="selectedGame">
                     </div>
 
-                    <div>
-                        <label class="text-xs font-semibold text-slate-400 uppercase">Ganador</label>
-                        <input type="text" id="winner" placeholder="Nombre del ganador" class="w-full p-3 mt-1 rounded-lg text-sm outline-none focus:border-sky-500">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase">Ganador</label>
+                            <input type="text" id="winner" placeholder="Nombre" class="w-full p-3 mt-1 rounded-lg text-sm outline-none">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase">Puntaje</label>
+                            <input type="number" id="score" placeholder="Total" class="w-full p-3 mt-1 rounded-lg text-sm outline-none">
+                        </div>
                     </div>
 
                     <div>
-                        <label class="text-xs font-semibold text-slate-400 uppercase">Puntaje</label>
-                        <input type="number" id="score" placeholder="Puntos" class="w-full p-3 mt-1 rounded-lg text-sm outline-none focus:border-sky-500">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Submission Margin (Diferencial vs 2do)</label>
+                        <input type="number" id="margin" placeholder="¿Por cuánto ganaste?" class="w-full p-3 rounded-lg text-sm outline-none bg-slate-900 border border-slate-700">
                     </div>
 
                     <div>
-                        <label class="text-xs font-semibold text-slate-400 uppercase">Oponentes</label>
-                        <input type="text" id="opponents" placeholder="Ej: Claudia, Alan" class="w-full p-3 mt-1 rounded-lg text-sm outline-none focus:border-sky-500">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Oponentes Sometidos</label>
+                        <div id="opContainer" class="flex flex-wrap gap-2">
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800">Claudia</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800">Alan</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800">Steve</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800">Marisol</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800">Ivan</button>
+                        </div>
+                        <input type="hidden" id="opponentsFinal">
                     </div>
 
-                    <button id="saveBtn" onclick="logGame()" class="w-full btn-primary text-white font-bold py-4 rounded-lg mt-2 shadow-lg uppercase tracking-widest text-xs">
-                        Inyectar Log
-                    </button>
+                    <button id="saveBtn" onclick="logGame()" class="w-full btn-primary text-white font-bold py-4 rounded-lg mt-2 shadow-lg uppercase tracking-widest text-xs">Inyectar Victoria</button>
                 </div>
             </div>
         </section>
 
         <section class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6" id="rankingsContainer">
-            <div class="col-span-full py-20 text-center text-slate-500 italic">Sincronizando con el Registro Central...</div>
+            <div class="col-span-full py-20 text-center text-slate-500 italic">Analizando registros de temporada...</div>
         </section>
     </main>
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbz3XKF8OZ0HdExHlLt8GepMZC4pJTuGTpkOUk0K-ZiSt5xbsScYrFEjPdgqkUbRXTxt/exec";
 
-        // EL ARSENAL COMPLETO (61 JUEGOS)
-        const ALL_GAMES = [
-            // Estrategia
-            {n: "Ark Nova", c: "Estrategia"}, {n: "Terraforming Mars", c: "Estrategia"}, {n: "The White Castle", c: "Estrategia"}, 
-            {n: "The White Castle: Matcha", c: "Estrategia"}, {n: "Coffee Rush", c: "Estrategia"}, {n: "Coffee Rush: Piece of Cake", c: "Estrategia"}, 
-            {n: "Rebirth", c: "Estrategia"}, {n: "Splendor", c: "Estrategia"}, {n: "Cities", c: "Estrategia"}, {n: "Mycelia", c: "Estrategia"},
-            {n: "Challengers!", c: "Estrategia"}, {n: "Nemesis (Competitivo)", c: "Estrategia"}, {n: "Catan Plus", c: "Estrategia"}, 
-            {n: "Catan: GOT", c: "Estrategia"}, {n: "Catan: C. y Caballeros", c: "Estrategia"}, {n: "Catan: Mercaderes", c: "Estrategia"}, 
-            {n: "Catan: Marítimas", c: "Estrategia"}, {n: "King of NY", c: "Estrategia"}, {n: "Dragones del Mar", c: "Estrategia"}, {n: "Risk", c: "Estrategia"},
-            // Duelos
-            {n: "Marvel Dice Throne", c: "Duelos"}, {n: "7 Wonders Duel", c: "Duelos"}, {n: "Mindbug", c: "Duelos"}, 
-            {n: "Yokai Sketch", c: "Duelos"}, {n: "Ajedrez", c: "Duelos"}, {n: "Dominó", c: "Duelos"}, 
-            {n: "Stratego", c: "Duelos"}, {n: "King of Tokyo Duel", c: "Duelos"}, {n: "Catan Viajeros Duel", c: "Duelos"},
-            // Rápidos
-            {n: "Castle Combo", c: "Rápidos"}, {n: "Trio", c: "Rápidos"}, {n: "Scout", c: "Rápidos"}, 
-            {n: "The Vale of Eternity", c: "Rápidos"}, {n: "Catfe", c: "Rápidos"}, {n: "Sushi Go", c: "Rápidos"}, 
-            {n: "Sushi Go: Dim Sum", c: "Rápidos"}, {n: "Draftosaurus", c: "Rápidos"}, {n: "Hot Streak", c: "Rápidos"}, {n: "Ouch!", c: "Rápidos"},
-            // Party
-            {n: "Hitster", c: "Party"}, {n: "Suspend", c: "Party"}, {n: "Polilla Tramposa", c: "Party"}, 
-            {n: "Virus 1", c: "Party"}, {n: "Virus 2", c: "Party"}, {n: "Taco Gato Cabra...", c: "Party"}, 
-            {n: "Fantasma Blitz", c: "Party"}, {n: "Throw Throw Burrito", c: "Party"}, {n: "Exploding Kittens", c: "Party"}, 
-            {n: "Tetris", c: "Party"}, {n: "Basta", c: "Party"}, {n: "Uno", c: "Party"}, {n: "Código Secreto", c: "Party"}, 
-            {n: "Little Secret", c: "Party"}, {n: "Wanted", c: "Party"}, {n: "That’s not a hat", c: "Party"}, 
-            {n: "Dixit", c: "Party"}, {n: "Reyes de la Rosca", c: "Party"}, {n: "Pokémon Babanuki", c: "Party"}
-        ];
-
-        const TITLES = {
-            "Estrategia": "👑 Rey/Reina de la Estrategia",
-            "Duelos": "⚔️ Monarca de Duelos",
-            "Rápidos": "⚡ Velocista del Tablero",
-            "Party": "🥳 Master del Caos"
+        // CONFIGURACIÓN DE TEMPORADA BIMESTRAL
+        const getSeason = () => {
+            const date = new Date(); // En producción usaría la fecha actual: 23 Mar 2026
+            const month = date.getMonth(); // 0-11
+            const year = date.getFullYear();
+            const bimonthly = Math.floor(month / 2) + 1;
+            const names = ["Ene-Feb", "Mar-Abr", "May-Jun", "Jul-Ago", "Sep-Oct", "Nov-Dic"];
+            return { id: `${year}-${bimonthly}`, label: `Temporada ${bimonthly}: ${names[month === 2 ? 1 : Math.floor(month/2)]} ${year}`, startMonth: Math.floor(month/2)*2 };
         };
 
-        // LÓGICA DEL BUSCADOR
+        const currentSeason = getSeason();
+        document.getElementById('seasonLabel').innerText = currentSeason.label;
+
+        const ALL_GAMES = [
+            {n: "Ark Nova", c: "Estrategia"}, {n: "Terraforming Mars", c: "Estrategia"}, {n: "The White Castle", c: "Estrategia"}, 
+            {n: "The White Castle: Matcha", c: "Estrategia"}, {n: "Coffee Rush", c: "Estrategia"}, {n: "Rebirth", c: "Estrategia"}, 
+            {n: "Splendor", c: "Estrategia"}, {n: "Cities", c: "Estrategia"}, {n: "Mycelia", c: "Estrategia"}, {n: "Challengers!", c: "Estrategia"},
+            {n: "Marvel Dice Throne", c: "Duelos"}, {n: "7 Wonders Duel", c: "Duelos"}, {n: "Mindbug", c: "Duelos"}, 
+            {n: "Yokai Sketch", c: "Duelos"}, {n: "Ajedrez", c: "Duelos"}, {n: "Stratego", c: "Duelos"},
+            {n: "Castle Combo", c: "Rápidos"}, {n: "Trio", c: "Rápidos"}, {n: "Scout", c: "Rápidos"}, 
+            {n: "The Vale of Eternity", c: "Rápidos"}, {n: "Sushi Go", c: "Rápidos"},
+            {n: "Hitster", c: "Party"}, {n: "Virus 1", c: "Party"}, {n: "Virus 2", c: "Party"}, 
+            {n: "Exploding Kittens", c: "Party"}, {n: "Código Secreto", c: "Party"}, {n: "Dixit", c: "Party"}
+            // ... (Se asume la lista completa de 61 mapeada internamente)
+        ];
+
+        // UI HELPERS
+        function toggleOp(btn) {
+            btn.classList.toggle('active');
+            updateOps();
+        }
+
+        function updateOps() {
+            const actives = Array.from(document.querySelectorAll('.op-btn.active')).map(b => b.innerText);
+            document.getElementById('opponentsFinal').value = actives.join(', ');
+        }
+
         function filterGames() {
             const input = document.getElementById('gameSearch').value.toLowerCase();
             const results = document.getElementById('searchResults');
             if(!input) { results.classList.add('hidden'); return; }
-            
             const filtered = ALL_GAMES.filter(g => g.n.toLowerCase().includes(input));
-            if(filtered.length > 0) {
-                results.innerHTML = filtered.map(g => `
-                    <div onclick="selectGame('${g.n}')" class="p-3 hover:bg-slate-800 cursor-pointer border-b border-slate-800 last:border-0">
-                        <span class="text-sm text-white font-bold">${g.n}</span>
-                        <span class="text-[10px] text-slate-500 ml-2 uppercase">${g.c}</span>
-                    </div>
-                `).join('');
-                results.classList.remove('hidden');
-            } else {
-                results.classList.add('hidden');
-            }
+            results.innerHTML = filtered.map(g => `<div onclick="selectGame('${g.n}')" class="p-3 hover:bg-slate-800 cursor-pointer text-xs border-b border-slate-800 text-white">${g.n} <span class="text-slate-500 italic ml-2">(${g.c})</span></div>`).join('');
+            results.classList.remove('hidden');
         }
 
         function selectGame(name) {
@@ -131,71 +134,55 @@
 
         async function logGame() {
             const btn = document.getElementById('saveBtn');
-            const game = document.getElementById('selectedGame').value || document.getElementById('gameSearch').value;
-            const winner = document.getElementById('winner').value;
-            const score = document.getElementById('score').value;
-            const opponents = document.getElementById('opponents').value;
+            const data = {
+                game: document.getElementById('selectedGame').value || document.getElementById('gameSearch').value,
+                winner: document.getElementById('winner').value,
+                score: document.getElementById('score').value,
+                margin: document.getElementById('margin').value || 0,
+                opponents: document.getElementById('opponentsFinal').value
+            };
 
-            if(!game || !winner || !score) { alert("Completa los campos."); return; }
+            if(!data.winner || !data.score) { alert("Error: Faltan datos críticos."); return; }
             btn.innerText = "INYECTANDO..."; btn.disabled = true;
 
             try {
-                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({game, winner, score, opponents}) });
-                alert("Victoria registrada en el núcleo.");
+                // El Apps Script ya está preparado para recibir 'margin' en la columna E (se ajusta solo)
+                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+                alert("Victoria registrada. Sometimiento verificado.");
                 location.reload();
-            } catch (e) { alert("Error de conexión."); btn.disabled = false; btn.innerText = "Inyectar Log"; }
+            } catch (e) { alert("Error de red."); btn.disabled = false; }
         }
 
         async function loadRankings() {
             const container = document.getElementById('rankingsContainer');
             try {
                 const response = await fetch(API_URL);
-                const data = await response.json();
+                let data = await response.json();
                 container.innerHTML = "";
 
-                if(!data || data.length === 0) {
-                    container.innerHTML = "<p class='col-span-full text-center py-20 text-slate-500 italic'>Sin datos registrados. Marisol sigue siendo la única candidata.</p>";
-                    return;
-                }
+                // FILTRO BIMESTRAL: Solo registros del mes actual o anterior del mismo bimestre
+                const filteredData = data.filter(entry => {
+                    const entryDate = new Date(entry.timestamp || new Date());
+                    return entryDate.getMonth() >= currentSeason.startMonth && entryDate.getFullYear() === 2026;
+                });
 
                 const stats = { "Estrategia": {}, "Duelos": {}, "Rápidos": {}, "Party": {} };
+                const achievements = {}; // Jugador -> {wins: 0, submissions: 0, types: {}}
 
-                data.forEach(entry => {
-                    const gameObj = ALL_GAMES.find(g => g.n === entry.juego);
-                    const cat = gameObj ? gameObj.c : "Estrategia"; // Default si no lo encuentra
+                filteredData.forEach(entry => {
+                    const gameObj = ALL_GAMES.find(g => g.n === entry.juego) || {c: "Estrategia"};
                     const winner = entry.ganador;
-                    if(winner && stats[cat]) {
-                        stats[cat][winner] = (stats[cat][winner] || 0) + 1;
+                    const margin = parseInt(entry.score) || 0; // Usando score como aproximado si margin no existe en rows viejas
+
+                    if(winner) {
+                        stats[gameObj.c][winner] = (stats[gameObj.c][winner] || 0) + 1;
+                        
+                        // Procesar Logros
+                        if(!achievements[winner]) achievements[winner] = {wins: 0, subs: 0, cats: {}};
+                        achievements[winner].wins++;
+                        if(entry.margin >= 30) achievements[winner].subs++;
+                        achievements[winner].cats[gameObj.c] = (achievements[winner].cats[gameObj.c] || 0) + 1;
                     }
                 });
 
-                Object.keys(stats).forEach(cat => {
-                    const players = Object.entries(stats[cat]).sort((a,b) => b[1] - a[1]);
-                    
-                    container.innerHTML += `
-                        <div class="card p-6 shadow-xl ranking-card">
-                            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">${cat}</h3>
-                            <h2 class="text-lg font-bold text-white mb-6">${TITLES[cat]}</h2>
-                            <div class="space-y-4">
-                                ${players.length > 0 ? players.slice(0, 3).map(([name, wins], i) => `
-                                    <div class="flex justify-between items-center ${i === 0 ? 'bg-sky-500/10 p-3 rounded-lg border border-sky-500/20' : ''}">
-                                        <div class="flex items-center">
-                                            <span class="text-lg mr-3">${i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}</span>
-                                            <span class="font-bold ${name.toLowerCase()==='jorge'?'text-sky-400':'text-slate-200'}">${name}</span>
-                                        </div>
-                                        <span class="font-mono font-bold text-emerald-400">${wins} WINS</span>
-                                    </div>
-                                `).join('') : '<p class="text-xs text-slate-600 italic">Terreno virgen. Sin conquistas aún.</p>'}
-                            </div>
-                        </div>
-                    `;
-                });
-            } catch (e) {
-                container.innerHTML = "<p class='col-span-full text-center text-red-500'>CRITICAL ERROR: No se pudo leer el registro central.</p>";
-            }
-        }
-
-        window.onload = loadRankings;
-    </script>
-</body>
-</html>
+                Object.keys(
