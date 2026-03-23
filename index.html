@@ -4,225 +4,158 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Muñoz | Game Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Muñoz | Game Tracker Pro</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { 
-            background-color: #0f172a; 
-            color: #f1f5f9; 
-            font-family: 'Inter', sans-serif; 
-        }
-        .card { 
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 12px;
-        }
-        input, select {
-            background-color: #0f172a !important;
-            border: 1px solid #475569 !important;
-            color: #f1f5f9 !important;
-        }
-        input:focus, select:focus {
-            border-color: #38bdf8 !important;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
-        }
-        .btn-primary {
-            background-color: #0284c7;
-            transition: all 0.2s;
-        }
-        .btn-primary:hover {
-            background-color: #0ea5e9;
-            transform: translateY(-1px);
-        }
-        .btn-primary:disabled {
-            background-color: #334155;
-            cursor: not-allowed;
-        }
+        body { background-color: #0f172a; color: #f1f5f9; font-family: 'Inter', sans-serif; }
+        .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; }
+        input, select { background-color: #0f172a !important; border: 1px solid #475569 !important; color: #f1f5f9 !important; }
+        input:focus, select:focus { border-color: #38bdf8 !important; outline: none; }
+        .btn-primary { background-color: #0284c7; transition: all 0.2s; }
+        .btn-primary:hover { background-color: #0ea5e9; }
     </style>
 </head>
-<body class="p-4 md:p-10">
-    <header class="max-w-5xl mx-auto mb-10 border-b border-slate-800 pb-8 flex justify-between items-center">
+<body class="p-4 md:p-8">
+    <header class="max-w-7xl mx-auto mb-8 border-b border-slate-800 pb-6 flex justify-between items-center">
         <div>
-            <h1 class="text-3xl font-bold tracking-tight text-white">Game Tracker</h1>
-            <p class="text-slate-400 mt-1">Arquitecto: J. Muñoz | Ciudad de México</p>
-        </div>
-        <div class="text-right hidden sm:block">
-            <span class="px-3 py-1 bg-slate-800 rounded-full text-[10px] font-bold text-slate-400 uppercase tracking-widest border border-slate-700">v1.2.5 Stable</span>
+            <h1 class="text-3xl font-bold text-white">Game Tracker <span class="text-sky-500 text-lg ml-2">v1.3.0</span></h1>
+            <p class="text-slate-400">Arquitecto: J. Muñoz | Analytics & Rankings</p>
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        <section class="lg:col-span-1 card p-6 shadow-2xl">
-            <h2 class="text-lg font-semibold mb-6 flex items-center text-white">
-                <span class="mr-2">📝</span> Nuevo Registro
-            </h2>
-            <div class="space-y-4">
-                <div>
-                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Juego</label>
-                    <select id="gameSelect" class="w-full p-3 mt-1 rounded-lg text-sm">
-                        <optgroup label="Euros / Estrategia">
-                            <option>Ark Nova</option>
-                            <option>The White Castle</option>
-                            <option>Terraforming Mars</option>
-                            <option>Rebirth</option>
-                        </optgroup>
-                        <optgroup label="Duelos 1v1">
-                            <option>Marvel Dice Throne</option>
-                            <option>Mindbug</option>
-                            <option>7 Wonders Duel</option>
-                            <option>Ajedrez</option>
-                        </optgroup>
-                        <optgroup label="Rápidos / Fillers">
-                            <option>Castle Combo</option>
-                            <option>Scout</option>
-                            <option>Trio</option>
-                            <option>The Vale of Eternity</option>
-                        </optgroup>
-                    </select>
+        <section class="lg:col-span-4 space-y-6">
+            <div class="card p-6 shadow-xl">
+                <h2 class="text-lg font-semibold mb-6 flex items-center text-white">
+                    <span class="mr-2">📝</span> Nuevo Registro
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-semibold text-slate-400 uppercase">Juego</label>
+                        <select id="gameSelect" class="w-full p-3 mt-1 rounded-lg text-sm">
+                            <optgroup label="Euros / Sistemas">
+                                <option>Ark Nova</option><option>Terraforming Mars</option><option>The White Castle</option>
+                                <option>The White Castle: Matcha</option><option>Coffee Rush</option><option>Coffee Rush: Piece of Cake</option>
+                                <option>Rebirth</option><option>Splendor</option><option>Cities</option><option>Mycelia</option>
+                            </optgroup>
+                            <optgroup label="Duelos 1v1">
+                                <option>Marvel Dice Throne</option><option>7 Wonders Duel</option><option>Mindbug</option>
+                                <option>Yokai Sketch</option><option>Ajedrez</option><option>Dominó</option>
+                                <option>Stratego</option><option>King of Tokyo Duel</option><option>Catan Viajeros Duel</option>
+                            </optgroup>
+                            <optgroup label="Estrategia / Torneo">
+                                <option>Challengers!</option><option>Nemesis (Competitivo)</option><option>Catan Plus</option>
+                                <option>Catan: GOT</option><option>Catan: C. y Caballeros</option><option>Catan: Mercaderes</option>
+                                <option>Catan: Marítimas</option><option>King of NY</option><option>Dragones del Mar</option><option>Risk</option>
+                            </optgroup>
+                            <optgroup label="Rápidos / Fillers">
+                                <option>Castle Combo</option><option>Trio</option><option>Scout</option>
+                                <option>The Vale of Eternity</option><option>Catfe</option><option>Sushi Go</option>
+                                <option>Sushi Go: Dim Sum</option><option>Draftosaurus</option><option>Hot Streak</option><option>Ouch!</option>
+                            </optgroup>
+                            <optgroup label="Party / Habilidad">
+                                <option>Hitster</option><option>Suspend</option><option>Polilla Tramposa</option>
+                                <option>Virus 1</option><option>Virus 2</option><option>Taco Gato...</option>
+                                <option>Fantasma Blitz</option><option>Throw Throw Burrito</option><option>Exploding Kittens</option>
+                                <option>Tetris</option><option>Basta</option><option>Uno</option><option>Código Secreto</option>
+                                <option>Little Secret</option><option>Wanted</option><option>That’s not a hat</option>
+                                <option>Dixit</option><option>Reyes de la Rosca</option><option>Pokémon Babanuki</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-slate-400 uppercase">Ganador</label>
+                        <input type="text" id="winner" placeholder="Nombre" class="w-full p-3 mt-1 rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-slate-400 uppercase">Puntaje</label>
+                        <input type="number" id="score" placeholder="Ej: 85" class="w-full p-3 mt-1 rounded-lg text-sm">
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-slate-400 uppercase">Oponentes</label>
+                        <input type="text" id="opponents" placeholder="Ej: Claudia, Alan..." class="w-full p-3 mt-1 rounded-lg text-sm">
+                    </div>
+                    <button id="saveBtn" onclick="logGame()" class="w-full btn-primary text-white font-bold py-4 rounded-lg mt-2 shadow-lg">
+                        Guardar Resultado
+                    </button>
                 </div>
-
-                <div>
-                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Ganador</label>
-                    <input type="text" id="winner" placeholder="Nombre del ganador" class="w-full p-3 mt-1 rounded-lg text-sm">
-                </div>
-
-                <div>
-                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Puntaje Final</label>
-                    <input type="number" id="score" placeholder="Ej: 125" class="w-full p-3 mt-1 rounded-lg text-sm">
-                </div>
-
-                <div>
-                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Oponentes</label>
-                    <input type="text" id="opponents" placeholder="Ej: Claudia, Alan, Steve" class="w-full p-3 mt-1 rounded-lg text-sm">
-                </div>
-
-                <button id="saveBtn" onclick="logGame()" class="w-full btn-primary text-white font-bold py-4 rounded-lg mt-2 shadow-lg">
-                    Guardar Resultado
-                </button>
             </div>
         </section>
 
-        <section class="lg:col-span-2 card p-6 shadow-2xl">
-            <h2 class="text-lg font-semibold mb-6 flex items-center text-white">
-                <span class="mr-2">🏆</span> Ranking Global
-            </h2>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="text-slate-500 text-[11px] uppercase tracking-widest border-b border-slate-800">
-                            <th class="pb-4">Posición</th>
-                            <th class="pb-4">Jugador</th>
-                            <th class="pb-4 text-center">Victorias</th>
-                            <th class="pb-4 text-right">Puntos (ELO)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="rankingBody">
-                        <tr>
-                            <td colspan="4" class="py-12 text-center text-slate-500 text-sm">Cargando ranking central...</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <section class="lg:col-span-8 space-y-6">
+            <div class="card p-6 shadow-xl">
+                <h2 class="text-lg font-semibold mb-4 text-white">📊 Juegos más jugados</h2>
+                <div class="h-64">
+                    <canvas id="gameChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card p-6 shadow-xl">
+                <h2 class="text-lg font-semibold mb-4 text-white">🏆 Ranking Global</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="text-slate-500 uppercase text-[10px] tracking-widest border-b border-slate-800">
+                                <th class="pb-3">Posición</th>
+                                <th class="pb-3">Jugador</th>
+                                <th class="pb-3 text-center">Victorias</th>
+                                <th class="pb-3 text-right">ELO</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rankingBody">
+                            <tr><td colspan="4" class="py-8 text-center text-slate-500">Sincronizando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="max-w-5xl mx-auto mt-16 text-[10px] text-slate-600 flex justify-between border-t border-slate-900 pt-8 uppercase tracking-widest">
-        <span>© 2026 Muñoz Game Architect</span>
-        <span>No Cooperative Mode Detected</span>
-    </footer>
-
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbz3XKF8OZ0HdExHlLt8GepMZC4pJTuGTpkOUk0K-ZiSt5xbsScYrFEjPdgqkUbRXTxt/exec";
+        let gameChartInstance = null;
 
         async function logGame() {
             const btn = document.getElementById('saveBtn');
-            const winner = document.getElementById('winner').value;
-            const score = document.getElementById('score').value;
-            const game = document.getElementById('gameSelect').value;
-            const opponents = document.getElementById('opponents').value;
-
-            if(!winner || !score || !opponents) {
-                alert("Error: Completa todos los campos antes de registrar.");
-                return;
-            }
-
-            btn.innerText = "Sincronizando...";
-            btn.disabled = true;
-
             const payload = {
-                game: game,
-                winner: winner,
-                score: score,
-                opponents: opponents
+                game: document.getElementById('gameSelect').value,
+                winner: document.getElementById('winner').value,
+                score: document.getElementById('score').value,
+                opponents: document.getElementById('opponents').value
             };
 
+            if(!payload.winner || !payload.score) { alert("Completa los datos."); return; }
+
+            btn.innerText = "Sincronizando..."; btn.disabled = true;
+
             try {
-                // Enviar datos
-                await fetch(API_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(payload)
-                });
-                
-                alert("Victoria de " + winner + " registrada correctamente.");
+                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+                alert("Victoria registrada.");
                 location.reload();
             } catch (error) {
-                console.error("Error de red:", error);
-                alert("Error crítico al conectar con el servidor.");
+                alert("Error de red.");
                 btn.disabled = false;
-                btn.innerText = "Guardar Resultado";
             }
         }
 
-        async function loadRankings() {
-            const tbody = document.getElementById('rankingBody');
-            
+        async function loadData() {
             try {
                 const response = await fetch(API_URL);
                 const data = await response.json();
-                
-                if(!data || data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="4" class="py-12 text-center text-slate-500 text-sm italic">Sin registros de combate actuales.</td></tr>';
-                    return;
-                }
+                if(!data || data.length === 0) return;
 
-                // Procesar victorias
-                const stats = {};
-                data.forEach(entry => {
-                    const name = entry.ganador;
-                    if(name) stats[name] = (stats[name] || 0) + 1;
-                });
-
-                // Ordenar de mayor a menor
-                const ranking = Object.entries(stats).sort((a, b) => b[1] - a[1]);
-
-                tbody.innerHTML = ranking.map(([player, wins], index) => {
-                    const isJorge = player.toLowerCase() === 'jorge';
-                    const elo = 1000 + (wins * 50);
-                    
-                    return `
-                        <tr class="border-b border-slate-800/40 hover:bg-slate-800/20 transition-all">
-                            <td class="py-5 font-mono text-slate-500 text-xs">#0${index + 1}</td>
-                            <td class="py-5">
-                                <span class="font-bold ${isJorge ? 'text-sky-400' : 'text-slate-200'}">
-                                    ${player}
-                                </span>
-                            </td>
-                            <td class="py-5 text-center font-bold text-emerald-500">${wins}</td>
-                            <td class="py-5 text-right font-mono text-slate-400 text-sm">${elo}</td>
-                        </tr>
-                    `;
-                }).join('');
-
+                renderRanking(data);
+                renderChart(data);
             } catch (e) {
-                console.error("Error de carga:", e);
-                tbody.innerHTML = '<tr><td colspan="4" class="py-12 text-center text-red-400 text-xs uppercase tracking-widest">Error de sincronización con la base de datos.</td></tr>';
+                console.error("Error cargando datos:", e);
             }
         }
 
-        window.onload = loadRankings;
-    </script>
-</body>
-</html>
+        function renderRanking(data) {
+            const stats = {};
+            data.forEach(entry => { if(entry.ganador) stats[entry.ganador] = (stats[entry.ganador] || 0) + 1; });
+            const ranking = Object.entries(stats).sort((a, b) => b[1] - a[1]);
+
+            document.getElementById
