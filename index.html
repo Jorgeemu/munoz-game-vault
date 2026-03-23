@@ -4,70 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Muñoz | Hall of Fame</title>
+    <title>Muñoz | Search & Destroy</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body { background-color: #0f172a; color: #f1f5f9; font-family: 'Inter', sans-serif; }
         .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; }
-        .crown-card { border: 1px solid #eab308; background: linear-gradient(145deg, #1e293b 0%, #161e2e 100%); }
-        input, select { background-color: #0f172a !important; border: 1px solid #475569 !important; color: #f1f5f9 !important; }
+        input, .search-results { background-color: #0f172a !important; border: 1px solid #475569 !important; }
         .btn-primary { background-color: #0284c7; transition: all 0.2s; cursor: pointer; }
         .btn-primary:hover { background-color: #0ea5e9; }
+        .ranking-card { border-top: 4px solid #38bdf8; }
+        .crown { color: #eab308; }
     </style>
 </head>
 <body class="p-4 md:p-8">
-    <header class="max-w-7xl mx-auto mb-10 border-b border-slate-800 pb-8">
-        <h1 class="text-3xl font-bold text-white tracking-tight">Muñoz Game Vault <span class="text-yellow-500 text-lg ml-2">v1.4.0</span></h1>
-        <p class="text-slate-400 mt-1">Arquitecto: J. Muñoz | Registro de Realeza del Tablero</p>
+    <header class="max-w-7xl mx-auto mb-8 border-b border-slate-800 pb-6 flex justify-between items-end">
+        <div>
+            <h1 class="text-3xl font-bold text-white tracking-tight">Muñoz Game Vault <span class="text-sky-500 text-sm ml-2 font-mono uppercase">v1.5.0</span></h1>
+            <p class="text-slate-400 text-sm">Registro de Realeza del Tablero | Architect: J. Muñoz</p>
+        </div>
     </header>
 
     <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         <section class="lg:col-span-4 space-y-6">
-            <div class="card p-6 shadow-2xl h-fit">
-                <h2 class="text-lg font-semibold mb-6 flex items-center text-white">
-                    <span class="mr-2">📝</span> Registrar Victoria
+            <div class="card p-6 shadow-2xl">
+                <h2 class="text-lg font-semibold mb-6 text-white flex items-center">
+                    <span class="mr-2">🔎</span> Registrar Victoria
                 </h2>
                 <div class="space-y-4">
-                    <div>
-                        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Juego</label>
-                        <select id="gameSelect" class="w-full p-3 mt-1 rounded-lg text-sm">
-                            <optgroup label="Estrategia / Euros">
-                                <option>Ark Nova</option><option>Terraforming Mars</option><option>The White Castle</option>
-                                <option>The White Castle: Matcha</option><option>Coffee Rush</option><option>Rebirth</option>
-                                <option>Splendor</option><option>Cities</option><option>Mycelia</option>
-                            </optgroup>
-                            <optgroup label="Duelos 1v1">
-                                <option>Marvel Dice Throne</option><option>7 Wonders Duel</option><option>Mindbug</option>
-                                <option>Yokai Sketch</option><option>Ajedrez</option><option>Dominó</option>
-                                <option>Stratego</option><option>King of Tokyo Duel</option><option>Catan Viajeros Duel</option>
-                            </optgroup>
-                            <optgroup label="Rápidos / Fillers">
-                                <option>Castle Combo</option><option>Trio</option><option>Scout</option>
-                                <option>The Vale of Eternity</option><option>Catfe</option><option>Sushi Go</option>
-                                <option>Draftosaurus</option><option>Hot Streak</option><option>Ouch!</option>
-                            </optgroup>
-                            <optgroup label="Party / Habilidad">
-                                <option>Hitster</option><option>Virus 1</option><option>Virus 2</option>
-                                <option>Taco Gato...</option><option>Fantasma Blitz</option><option>Exploding Kittens</option>
-                                <option>Código Secreto</option><option>Wanted</option><option>That’s not a hat</option>
-                                <option>Dixit</option>
-                            </optgroup>
-                        </select>
+                    <div class="relative">
+                        <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Buscar Juego (61 Disponibles)</label>
+                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="Escribe el nombre del juego..." autocomplete="off" class="w-full p-3 mt-1 rounded-lg text-sm outline-none focus:border-sky-500">
+                        <div id="searchResults" class="hidden absolute z-10 w-full mt-1 max-h-48 overflow-y-auto rounded-lg border border-slate-700 bg-slate-900 shadow-xl">
+                            </div>
+                        <input type="hidden" id="selectedGame">
                     </div>
+
                     <div>
                         <label class="text-xs font-semibold text-slate-400 uppercase">Ganador</label>
-                        <input type="text" id="winner" placeholder="Nombre" class="w-full p-3 mt-1 rounded-lg text-sm">
+                        <input type="text" id="winner" placeholder="Nombre del ganador" class="w-full p-3 mt-1 rounded-lg text-sm outline-none focus:border-sky-500">
                     </div>
+
                     <div>
                         <label class="text-xs font-semibold text-slate-400 uppercase">Puntaje</label>
-                        <input type="number" id="score" placeholder="Puntos" class="w-full p-3 mt-1 rounded-lg text-sm">
+                        <input type="number" id="score" placeholder="Puntos" class="w-full p-3 mt-1 rounded-lg text-sm outline-none focus:border-sky-500">
                     </div>
+
                     <div>
                         <label class="text-xs font-semibold text-slate-400 uppercase">Oponentes</label>
-                        <input type="text" id="opponents" placeholder="Ej: Claudia, Alan" class="w-full p-3 mt-1 rounded-lg text-sm">
+                        <input type="text" id="opponents" placeholder="Ej: Claudia, Alan" class="w-full p-3 mt-1 rounded-lg text-sm outline-none focus:border-sky-500">
                     </div>
-                    <button id="saveBtn" onclick="logGame()" class="w-full btn-primary text-white font-bold py-4 rounded-lg mt-2 shadow-lg">
+
+                    <button id="saveBtn" onclick="logGame()" class="w-full btn-primary text-white font-bold py-4 rounded-lg mt-2 shadow-lg uppercase tracking-widest text-xs">
                         Inyectar Log
                     </button>
                 </div>
@@ -75,20 +63,38 @@
         </section>
 
         <section class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6" id="rankingsContainer">
-            <div class="col-span-full py-20 text-center text-slate-500 animate-pulse">Sincronizando con el Registro Central...</div>
+            <div class="col-span-full py-20 text-center text-slate-500 italic">Sincronizando con el Registro Central...</div>
         </section>
     </main>
 
     <script>
         const API_URL = "https://script.google.com/macros/s/AKfycbz3XKF8OZ0HdExHlLt8GepMZC4pJTuGTpkOUk0K-ZiSt5xbsScYrFEjPdgqkUbRXTxt/exec";
 
-        // Mapeo Táctico de Juegos por Categoría
-        const CATEGORIES = {
-            "Estrategia": ["Ark Nova", "Terraforming Mars", "The White Castle", "The White Castle: Matcha", "Coffee Rush", "Rebirth", "Splendor", "Cities", "Mycelia", "Catan Plus", "Catan: GOT", "Nemesis (Modo Competitivo)", "Dragones del Mar", "Risk"],
-            "Duelos": ["Marvel Dice Throne", "7 Wonders Duel", "Mindbug", "Yokai Sketch", "Ajedrez", "Dominó", "Stratego", "King of Tokyo Duel", "Catan Viajeros Duel"],
-            "Rápidos": ["Castle Combo", "Trio", "Scout", "The Vale of Eternity", "Catfe", "Sushi Go", "Sushi Go: Dim Sum", "Draftosaurus", "Hot Streak", "Ouch!"],
-            "Party": ["Hitster", "Suspend", "Polilla Tramposa", "Virus 1", "Virus 2", "Taco Gato...", "Fantasma Blitz", "Throw Throw Burrito", "Exploding Kittens", "Tetris", "Basta", "Uno", "Código Secreto", "Little Secret", "Wanted", "That’s not a hat", "Dixit", "Reyes de la Rosca", "Pokémon Babanuki"]
-        };
+        // EL ARSENAL COMPLETO (61 JUEGOS)
+        const ALL_GAMES = [
+            // Estrategia
+            {n: "Ark Nova", c: "Estrategia"}, {n: "Terraforming Mars", c: "Estrategia"}, {n: "The White Castle", c: "Estrategia"}, 
+            {n: "The White Castle: Matcha", c: "Estrategia"}, {n: "Coffee Rush", c: "Estrategia"}, {n: "Coffee Rush: Piece of Cake", c: "Estrategia"}, 
+            {n: "Rebirth", c: "Estrategia"}, {n: "Splendor", c: "Estrategia"}, {n: "Cities", c: "Estrategia"}, {n: "Mycelia", c: "Estrategia"},
+            {n: "Challengers!", c: "Estrategia"}, {n: "Nemesis (Competitivo)", c: "Estrategia"}, {n: "Catan Plus", c: "Estrategia"}, 
+            {n: "Catan: GOT", c: "Estrategia"}, {n: "Catan: C. y Caballeros", c: "Estrategia"}, {n: "Catan: Mercaderes", c: "Estrategia"}, 
+            {n: "Catan: Marítimas", c: "Estrategia"}, {n: "King of NY", c: "Estrategia"}, {n: "Dragones del Mar", c: "Estrategia"}, {n: "Risk", c: "Estrategia"},
+            // Duelos
+            {n: "Marvel Dice Throne", c: "Duelos"}, {n: "7 Wonders Duel", c: "Duelos"}, {n: "Mindbug", c: "Duelos"}, 
+            {n: "Yokai Sketch", c: "Duelos"}, {n: "Ajedrez", c: "Duelos"}, {n: "Dominó", c: "Duelos"}, 
+            {n: "Stratego", c: "Duelos"}, {n: "King of Tokyo Duel", c: "Duelos"}, {n: "Catan Viajeros Duel", c: "Duelos"},
+            // Rápidos
+            {n: "Castle Combo", c: "Rápidos"}, {n: "Trio", c: "Rápidos"}, {n: "Scout", c: "Rápidos"}, 
+            {n: "The Vale of Eternity", c: "Rápidos"}, {n: "Catfe", c: "Rápidos"}, {n: "Sushi Go", c: "Rápidos"}, 
+            {n: "Sushi Go: Dim Sum", c: "Rápidos"}, {n: "Draftosaurus", c: "Rápidos"}, {n: "Hot Streak", c: "Rápidos"}, {n: "Ouch!", c: "Rápidos"},
+            // Party
+            {n: "Hitster", c: "Party"}, {n: "Suspend", c: "Party"}, {n: "Polilla Tramposa", c: "Party"}, 
+            {n: "Virus 1", c: "Party"}, {n: "Virus 2", c: "Party"}, {n: "Taco Gato Cabra...", c: "Party"}, 
+            {n: "Fantasma Blitz", c: "Party"}, {n: "Throw Throw Burrito", c: "Party"}, {n: "Exploding Kittens", c: "Party"}, 
+            {n: "Tetris", c: "Party"}, {n: "Basta", c: "Party"}, {n: "Uno", c: "Party"}, {n: "Código Secreto", c: "Party"}, 
+            {n: "Little Secret", c: "Party"}, {n: "Wanted", c: "Party"}, {n: "That’s not a hat", c: "Party"}, 
+            {n: "Dixit", c: "Party"}, {n: "Reyes de la Rosca", c: "Party"}, {n: "Pokémon Babanuki", c: "Party"}
+        ];
 
         const TITLES = {
             "Estrategia": "👑 Rey/Reina de la Estrategia",
@@ -97,57 +103,99 @@
             "Party": "🥳 Master del Caos"
         };
 
+        // LÓGICA DEL BUSCADOR
+        function filterGames() {
+            const input = document.getElementById('gameSearch').value.toLowerCase();
+            const results = document.getElementById('searchResults');
+            if(!input) { results.classList.add('hidden'); return; }
+            
+            const filtered = ALL_GAMES.filter(g => g.n.toLowerCase().includes(input));
+            if(filtered.length > 0) {
+                results.innerHTML = filtered.map(g => `
+                    <div onclick="selectGame('${g.n}')" class="p-3 hover:bg-slate-800 cursor-pointer border-b border-slate-800 last:border-0">
+                        <span class="text-sm text-white font-bold">${g.n}</span>
+                        <span class="text-[10px] text-slate-500 ml-2 uppercase">${g.c}</span>
+                    </div>
+                `).join('');
+                results.classList.remove('hidden');
+            } else {
+                results.classList.add('hidden');
+            }
+        }
+
+        function selectGame(name) {
+            document.getElementById('gameSearch').value = name;
+            document.getElementById('selectedGame').value = name;
+            document.getElementById('searchResults').classList.add('hidden');
+        }
+
         async function logGame() {
             const btn = document.getElementById('saveBtn');
-            const data = {
-                game: document.getElementById('gameSelect').value,
-                winner: document.getElementById('winner').value,
-                score: document.getElementById('score').value,
-                opponents: document.getElementById('opponents').value
-            };
+            const game = document.getElementById('selectedGame').value || document.getElementById('gameSearch').value;
+            const winner = document.getElementById('winner').value;
+            const score = document.getElementById('score').value;
+            const opponents = document.getElementById('opponents').value;
 
-            if(!data.winner || !data.score) { alert("Datos incompletos."); return; }
-            btn.innerText = "Guardando..."; btn.disabled = true;
+            if(!game || !winner || !score) { alert("Completa los campos."); return; }
+            btn.innerText = "INYECTANDO..."; btn.disabled = true;
 
             try {
-                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                alert("Victoria registrada.");
+                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({game, winner, score, opponents}) });
+                alert("Victoria registrada en el núcleo.");
                 location.reload();
-            } catch (e) { alert("Error."); btn.disabled = false; }
+            } catch (e) { alert("Error de conexión."); btn.disabled = false; btn.innerText = "Inyectar Log"; }
         }
 
         async function loadRankings() {
+            const container = document.getElementById('rankingsContainer');
             try {
                 const response = await fetch(API_URL);
                 const data = await response.json();
-                const container = document.getElementById('rankingsContainer');
                 container.innerHTML = "";
 
                 if(!data || data.length === 0) {
-                    container.innerHTML = "<p class='col-span-full text-center py-10'>No hay registros aún.</p>";
+                    container.innerHTML = "<p class='col-span-full text-center py-20 text-slate-500 italic'>Sin datos registrados. Marisol sigue siendo la única candidata.</p>";
                     return;
                 }
 
-                // Agrupar victorias por categoría y jugador
-                const categoryStats = { "Estrategia": {}, "Duelos": {}, "Rápidos": {}, "Party": {} };
+                const stats = { "Estrategia": {}, "Duelos": {}, "Rápidos": {}, "Party": {} };
 
                 data.forEach(entry => {
-                    const game = entry.juego;
+                    const gameObj = ALL_GAMES.find(g => g.n === entry.juego);
+                    const cat = gameObj ? gameObj.c : "Estrategia"; // Default si no lo encuentra
                     const winner = entry.ganador;
-                    
-                    for (const [cat, games] in CATEGORIES) {
-                        if (games.includes(game)) {
-                            categoryStats[cat][winner] = (categoryStats[cat][winner] || 0) + 1;
-                        }
+                    if(winner && stats[cat]) {
+                        stats[cat][winner] = (stats[cat][winner] || 0) + 1;
                     }
                 });
 
-                // Renderizar cada ranking
-                for (const cat in categoryStats) {
-                    const players = Object.entries(categoryStats[cat]).sort((a,b) => b[1] - a[1]);
-                    const topPlayer = players[0] ? players[0][0] : "Sin Rey";
+                Object.keys(stats).forEach(cat => {
+                    const players = Object.entries(stats[cat]).sort((a,b) => b[1] - a[1]);
                     
                     container.innerHTML += `
-                        <div class="card p-5 shadow-lg border-t-4 ${players[0] ? 'border-yellow-500' : 'border-slate-700'}">
-                            <h3 class="text-sm font-bold text-slate-400 uppercase tracking-tighter mb-1">${cat}</h3>
-                            <h2 class="text-lg font-bold text-white mb-
+                        <div class="card p-6 shadow-xl ranking-card">
+                            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">${cat}</h3>
+                            <h2 class="text-lg font-bold text-white mb-6">${TITLES[cat]}</h2>
+                            <div class="space-y-4">
+                                ${players.length > 0 ? players.slice(0, 3).map(([name, wins], i) => `
+                                    <div class="flex justify-between items-center ${i === 0 ? 'bg-sky-500/10 p-3 rounded-lg border border-sky-500/20' : ''}">
+                                        <div class="flex items-center">
+                                            <span class="text-lg mr-3">${i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}</span>
+                                            <span class="font-bold ${name.toLowerCase()==='jorge'?'text-sky-400':'text-slate-200'}">${name}</span>
+                                        </div>
+                                        <span class="font-mono font-bold text-emerald-400">${wins} WINS</span>
+                                    </div>
+                                `).join('') : '<p class="text-xs text-slate-600 italic">Terreno virgen. Sin conquistas aún.</p>'}
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (e) {
+                container.innerHTML = "<p class='col-span-full text-center text-red-500'>CRITICAL ERROR: No se pudo leer el registro central.</p>";
+            }
+        }
+
+        window.onload = loadRankings;
+    </script>
+</body>
+</html>
