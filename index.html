@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Muñoz Game Tracker | Alpha Access</title>
+    <style>
+        body { background-color: #0b111a; color: #e2e8f0; font-family: 'Courier New', monospace; }
+        .neon-border { border: 1px solid #00ff9f; box-shadow: 0 0 10px #00ff9f; }
+        .glitch-text { text-shadow: 2px 2px #ff0055; }
+    </style>
+</head>
+<body class="p-8">
+    <header class="mb-10 border-b border-cyan-500 pb-4">
+        <h1 class="text-4xl font-bold glitch-text uppercase tracking-tighter text-cyan-400">Combat Tracker v1.0</h1>
+        <p class="text-xs text-cyan-700">User: J.Muñoz | Status: Dominating</p>
+    </header>
+
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <section class="neon-border p-6 bg-black/50">
+            <h2 class="text-xl mb-4 text-pink-500 font-bold tracking-widest uppercase">Registrar Log</h2>
+            <div class="space-y-4">
+                <select id="gameSelect" class="w-full bg-gray-900 border border-gray-700 p-2">
+                    <option>Ark Nova</option>
+                    <option>The White Castle</option>
+                    <option>7 Wonders Duel</option>
+                    <option>Mindbug</option>
+                </select>
+                <input type="text" id="winner" placeholder="Ganador (Dominante)" class="w-full bg-gray-900 border border-gray-700 p-2">
+                <input type="number" id="score" placeholder="Puntaje Final" class="w-full bg-gray-900 border border-gray-700 p-2">
+                <button onclick="logGame()" class="w-full bg-cyan-600 hover:bg-cyan-400 text-black font-bold py-2 transition-all uppercase">Inyectar Datos</button>
+            </div>
+        </section>
+
+        <section class="neon-border p-6 bg-black/50">
+            <h2 class="text-xl mb-4 text-cyan-400 font-bold tracking-widest uppercase">Top Operatives</h2>
+            <table class="w-full text-left">
+                <thead class="text-cyan-800 text-sm">
+                    <tr><th>Player</th><th>W/L</th><th>ELO</th></tr>
+                </thead>
+                <tbody id="rankingBody">
+                    <tr><td>Jorge</td><td>15-0</td><td>2400</td></tr>
+                    <tr class="opacity-50 text-gray-500"><td>Alan</td><td>8-7</td><td>1800</td></tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>
