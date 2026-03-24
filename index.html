@@ -4,100 +4,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>La Guarida de Macaria</title>
+    <title>La Guarida de Macaria v2.2</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Space+Mono:wght@700&display=swap');
         body { background-color: #090c14; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .guarida-card { background-color: #111827; border: 1px solid #1f2937; border-radius: 16px; }
+        .guarida-card { background-color: #111827; border: 1px solid #1f2937; border-radius: 20px; }
         .input-style { background-color: #090c14 !important; border: 1px solid #374151 !important; border-radius: 10px; }
         .accent-amber { color: #f59e0b; }
         .bg-amber { background-color: #f59e0b; color: #000; }
         .op-btn.active { background-color: #f59e0b; color: #000; border-color: #f59e0b; }
-        th { font-size: 0.7rem; text-transform: uppercase; color: #6b7280; padding: 12px; border-bottom: 1px solid #1f2937; }
-        td { padding: 12px; border-bottom: 1px solid #1f2937; font-size: 0.85rem; }
+        th { font-size: 0.6rem; text-transform: uppercase; color: #6b7280; padding: 12px; border-bottom: 1px solid #1f2937; text-align: center; }
+        td { padding: 12px; border-bottom: 1px solid #1f2937; font-size: 0.8rem; text-align: center; }
+        .toast { position: fixed; top: 20px; right: 20px; transform: translateX(200%); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 100; }
+        .toast.show { transform: translateX(0); }
     </style>
 </head>
 <body class="p-4 md:p-8">
-    <header class="max-w-[1400px] mx-auto mb-10 border-b border-gray-800 pb-6 flex flex-col md:flex-row justify-between items-center">
-        <h1 class="text-3xl font-extrabold tracking-tighter uppercase">🐾 LA GUARIDA DE <span class="accent-amber">MACARIA</span></h1>
-        <div class="flex gap-4 mt-4 md:mt-0 text-[10px] font-bold uppercase text-gray-500">
-            <span id="seasonDisplay">Temporada: Marzo - Abril</span>
-            <span class="text-emerald-500">● Conexión Activa</span>
+    <div id="macariaToast" class="toast bg-amber p-4 rounded-xl shadow-2xl flex items-center gap-4 border-2 border-white">
+        <span class="text-3xl">🐾</span>
+        <div>
+            <p class="font-black text-xs uppercase italic">¡Sello de Macaria!</p>
+            <p class="text-[10px] font-bold">Victoria registrada en el registro central.</p>
+        </div>
+    </div>
+
+    <header class="max-w-[1600px] mx-auto mb-10 border-b border-gray-800 pb-6 flex flex-col md:flex-row justify-between items-center">
+        <h1 class="text-3xl font-extrabold tracking-tighter uppercase italic">🐾 LA GUARIDA DE <span class="accent-amber">MACARIA</span></h1>
+        <div class="flex gap-6 mt-4 md:mt-0 text-[10px] font-bold uppercase text-gray-500">
+            <span>Mar-Abr 2026</span>
+            <span class="text-emerald-500">● Tatami Conectado</span>
+            <span>v2.2.0</span>
         </div>
     </header>
 
-    <main class="max-w-[1400px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-8">
+    <main class="max-w-[1600px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-8">
         
-        <section class="xl:col-span-3">
-            <div class="guarida-card p-6 shadow-2xl">
-                <h2 class="text-lg font-bold mb-6 flex items-center">🏆 Registrar Partida</h2>
+        <section class="xl:col-span-3 space-y-6">
+            <div class="guarida-card p-6 shadow-2xl border-t-2 border-amber-500/20">
+                <h2 class="text-md font-bold mb-6 flex items-center gap-2">🏆 Guardar Resultado</h2>
                 <div class="space-y-4">
                     <div class="relative">
-                        <label class="text-[10px] font-bold text-gray-500 uppercase">Nombre del Juego</label>
-                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="¿Qué jugaron?" class="w-full p-3 mt-1 input-style outline-none focus:ring-1 focus:ring-amber-500 text-sm">
-                        <div id="searchResults" class="hidden absolute z-30 w-full mt-2 max-h-60 overflow-y-auto rounded-lg border border-gray-700 bg-gray-900 shadow-2xl"></div>
+                        <label class="text-[9px] font-bold text-gray-500 uppercase">Juego</label>
+                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="Buscar..." class="w-full p-3 mt-1 input-style outline-none text-sm">
+                        <div id="searchResults" class="hidden absolute z-30 w-full mt-2 max-h-60 overflow-y-auto rounded-xl border border-gray-700 bg-gray-900 shadow-2xl"></div>
                     </div>
-                    
                     <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="text-[10px] font-bold text-gray-500 uppercase text-center block">Ganador</label>
-                            <input type="text" id="winner" placeholder="Nombre" class="w-full p-3 mt-1 input-style outline-none text-sm text-center">
-                        </div>
-                        <div>
-                            <label class="text-[10px] font-bold text-gray-500 uppercase text-center block">Puntaje</label>
-                            <input type="number" id="score" placeholder="Puntos" class="w-full p-3 mt-1 input-style outline-none text-sm text-center">
-                        </div>
+                        <input type="text" id="winner" placeholder="Ganador" class="w-full p-3 input-style outline-none text-sm text-center">
+                        <input type="number" id="score" placeholder="Puntos" class="w-full p-3 input-style outline-none text-sm text-center">
                     </div>
-
-                    <label class="text-[10px] font-bold text-gray-500 uppercase block text-center">Ventaja de puntos vs 2do lugar</label>
-                    <input type="number" id="margin" placeholder="Ej: 28" class="w-full p-3 input-style outline-none text-sm text-center border-amber-900/20">
-
                     <div>
-                        <label class="text-[10px] font-bold text-gray-500 uppercase mb-2 block">Rivales derrotados</label>
-                        <div class="flex flex-wrap gap-2">
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[10px] font-bold bg-gray-800 border border-gray-700 transition-all">Jorge</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[10px] font-bold bg-gray-800 border border-gray-700 transition-all">Claudia</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[10px] font-bold bg-gray-800 border border-gray-700 transition-all">Alan</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[10px] font-bold bg-gray-800 border border-gray-700 transition-all">Marisol</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[10px] font-bold bg-gray-800 border border-gray-700 transition-all">Ivan</button>
+                        <label class="text-[9px] font-bold accent-amber uppercase">Ventaja vs 2do lugar</label>
+                        <input type="number" id="margin" placeholder="Diferencial" class="w-full p-3 mt-1 input-style outline-none text-sm text-center border-amber-900/40">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-gray-500 uppercase block mb-2 text-center italic">Rivales en la mesa</label>
+                        <div class="flex flex-wrap justify-center gap-2">
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Jorge</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Claudia</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Alan</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Marisol</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Ivan</button>
                         </div>
                     </div>
-                    <button onclick="logGame()" id="saveBtn" class="w-full bg-amber text-black font-black py-4 rounded-xl mt-4 uppercase tracking-tighter hover:brightness-110 active:scale-95 transition-all">Guardar Partida</button>
+                    <button onclick="logGame()" id="saveBtn" class="w-full bg-amber text-black font-black py-4 rounded-xl mt-4 uppercase text-xs hover:scale-[1.02] transition-transform">Subir Registro</button>
                 </div>
+            </div>
+
+            <div class="guarida-card p-6 border-l-2 border-emerald-500/30">
+                <h2 class="text-xs font-black uppercase text-emerald-500 mb-4">🔮 Oráculo de Macaria</h2>
+                <p class="text-[10px] text-gray-500 mb-4 italic">Selecciona quiénes juegan y te diré qué sacar de la caja.</p>
+                <div id="nextGamePlayers" class="flex flex-wrap gap-2 mb-4">
+                    <label class="flex items-center gap-1 text-[10px] bg-gray-800 px-2 py-1 rounded cursor-pointer"><input type="checkbox" value="Jorge"> J</label>
+                    <label class="flex items-center gap-1 text-[10px] bg-gray-800 px-2 py-1 rounded cursor-pointer"><input type="checkbox" value="Claudia"> C</label>
+                    <label class="flex items-center gap-1 text-[10px] bg-gray-800 px-2 py-1 rounded cursor-pointer"><input type="checkbox" value="Alan"> A</label>
+                    <label class="flex items-center gap-1 text-[10px] bg-gray-800 px-2 py-1 rounded cursor-pointer"><input type="checkbox" value="Marisol"> M</label>
+                    <label class="flex items-center gap-1 text-[10px] bg-gray-800 px-2 py-1 rounded cursor-pointer"><input type="checkbox" value="Ivan"> I</label>
+                </div>
+                <button onclick="suggestGame()" class="w-full border border-emerald-500 text-emerald-500 py-2 rounded-lg text-[10px] font-bold hover:bg-emerald-500/10 transition-all">Consultar a Macaria</button>
+                <div id="suggestionResult" class="mt-4 text-xs font-bold accent-amber hidden text-center p-2 bg-emerald-500/5 rounded"></div>
             </div>
         </section>
 
-        <section class="xl:col-span-9 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <section class="xl:col-span-9 grid grid-cols-1 lg:grid-cols-12 gap-8">
             
             <div class="lg:col-span-8 guarida-card p-6">
-                <h2 class="text-xs font-black tracking-widest uppercase text-gray-500 mb-6">Tabla de Posiciones</h2>
+                <h2 class="text-[10px] font-black tracking-widest uppercase text-gray-500 mb-6">Ranking de la Temporada</h2>
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left">
+                    <table class="w-full">
                         <thead>
                             <tr>
-                                <th>Pos</th>
-                                <th>Jugador</th>
-                                <th class="text-center">Partidas Ganadas</th>
-                                <th class="text-right">Puntos Totales</th>
+                                <th>#</th>
+                                <th class="text-left">Jugador</th>
+                                <th>Estrat (10)</th>
+                                <th>Duelo (7)</th>
+                                <th>Rápido (5)</th>
+                                <th>Bonos</th>
+                                <th class="text-right">PTS</th>
                             </tr>
                         </thead>
                         <tbody id="rankingBody">
-                            <tr><td colspan="4" class="text-center py-10 opacity-50">Cargando registros...</td></tr>
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="lg:col-span-4 space-y-6">
+            <div class="lg:col-span-4 space-y-8">
                 <div class="guarida-card p-6">
-                    <h2 class="text-xs font-black tracking-widest uppercase text-gray-500 mb-6">Premios de la Temporada</h2>
-                    <div id="awardsBody" class="space-y-4">
+                    <h2 class="text-[10px] font-black tracking-widest uppercase text-gray-500 mb-6 italic">Muro de Premios</h2>
+                    <div id="awardsBody" class="space-y-5">
                         </div>
                 </div>
 
                 <div class="guarida-card p-6">
-                    <h2 class="text-xs font-black tracking-widest uppercase text-gray-500 mb-6">Juegos más jugados</h2>
-                    <div id="topGamesBody" class="space-y-2">
+                    <h2 class="text-[10px] font-black tracking-widest uppercase text-gray-500 mb-6 italic">Los favoritos de la mesa</h2>
+                    <div id="topGamesBody" class="space-y-3">
                         </div>
                 </div>
             </div>
@@ -106,14 +126,20 @@
     </main>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbzwGRVhRiz8Fq_eFqv7WUklCcPnzAbPXZXgA1xC7cx4OJi2v-7jyXyyzOu6X8Jpnj1Y/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbz3XKF8OZ0HdExHlLt8GepMZC4pJTuGTpkOUk0K-ZiSt5xbsScYrFEjPdgqkUbRXTxt/exec";
 
         const LUDOTECA = [
             {n: "Ark Nova", c: "Estrategia"}, {n: "Terraforming Mars", c: "Estrategia"}, {n: "The White Castle", c: "Estrategia"},
             {n: "Marvel Dice Throne", c: "Duelo"}, {n: "7 Wonders Duel", c: "Duelo"}, {n: "Mindbug", c: "Duelo"},
-            {n: "Trio", c: "Rápido"}, {n: "Castle Combo", c: "Rápido"}, {n: "Scout", c: "Rápido"},
+            {n: "Trio", c: "Rápido"}, {n: "Castle Combo", c: "Rápido"}, {n: "Scout", c: "Rápido"}, {n: "Hitster", c: "Rápido"},
             {n: "Coffee Rush", c: "Estrategia"}, {n: "Dragones del Mar", c: "Estrategia"}, {n: "Hot Streak", c: "Rápido"}
         ];
+
+        const DESCRIPTIONS = {
+            cerebro: "Victoria con el mayor diferencial de puntos de la temporada.",
+            tahur: "Jugador con más victorias en juegos rápidos y de azar.",
+            hierro: "Dominio absoluto en encuentros 1 vs 1."
+        };
 
         function toggleOp(btn) { btn.classList.toggle('active'); }
 
@@ -122,7 +148,7 @@
             const res = document.getElementById('searchResults');
             if(!input) { res.classList.add('hidden'); return; }
             const filtered = LUDOTECA.filter(g => g.n.toLowerCase().includes(input));
-            res.innerHTML = filtered.map(g => `<div onclick="selectGame('${g.n}')" class="p-4 hover:bg-amber-500/10 cursor-pointer border-b border-gray-800 text-xs font-bold">${g.n}</div>`).join('');
+            res.innerHTML = filtered.map(g => `<div onclick="selectGame('${g.n}')" class="p-3 hover:bg-amber-500/10 cursor-pointer border-b border-gray-800 text-xs font-bold">${g.n}</div>`).join('');
             res.classList.remove('hidden');
         }
 
@@ -138,11 +164,25 @@
                 margin: Number(document.getElementById('margin').value) || 0,
                 opponents: actives.join(', ')
             };
-            btn.innerText = "Guardando..."; btn.disabled = true;
+            btn.innerText = "PROCESANDO..."; btn.disabled = true;
             try {
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                location.reload();
-            } catch (e) { alert("Error al guardar"); btn.disabled = false; }
+                const toast = document.getElementById('macariaToast');
+                toast.classList.add('show');
+                setTimeout(() => location.reload(), 2000);
+            } catch (e) { alert("Error"); btn.disabled = false; }
+        }
+
+        function suggestGame() {
+            const checked = Array.from(document.querySelectorAll('#nextGamePlayers input:checked')).map(i => i.value);
+            const count = checked.length;
+            const res = document.getElementById('suggestionResult');
+            res.classList.remove('hidden');
+            
+            if (count === 0) { res.innerText = "¡Dime quién juega primero!"; return; }
+            if (count === 2) { res.innerText = "Duelo: Mindbug o 7 Wonders Duel"; }
+            else if (count >= 3 && count <= 4) { res.innerText = "Estrategia: White Castle o Ark Nova"; }
+            else { res.innerText = "Fiesta: Trio, Hitster o Challengers!"; }
         }
 
         async function loadData() {
@@ -152,13 +192,12 @@
                 if(!data || data.length === 0) return;
 
                 const players = {};
-                const gamesCount = {};
-                let maxMargin = 0;
-                let topBrain = "";
+                const gameStats = {};
+                let topMargin = 0; let topBrain = "";
 
                 data.forEach(entry => {
                     const name = entry.ganador;
-                    if(!players[name]) players[name] = { pts: 0, wins: 0, strategyWins: 0, duelWins: 0, rapidWins: 0 };
+                    if(!players[name]) players[name] = { pts: 0, wins: 0, strategy: 0, duels: 0, rapids: 0, bonus: 0, plays: 0 };
                     
                     const gameInfo = LUDOTECA.find(g => g.n === entry.juego) || {c: "Estrategia"};
                     let base = gameInfo.c === "Estrategia" ? 10 : gameInfo.c === "Duelo" ? 7 : 5;
@@ -167,55 +206,60 @@
 
                     players[name].pts += (base + bonus);
                     players[name].wins++;
-                    if(gameInfo.c === "Estrategia") players[name].strategyWins++;
-                    if(gameInfo.c === "Duelo") players[name].duelWins++;
-                    if(gameInfo.c === "Rápido") players[name].rapidWins++;
+                    players[name].bonus += bonus;
+                    if(gameInfo.c === "Estrategia") players[name].strategy++;
+                    if(gameInfo.c === "Duelo") players[name].duels++;
+                    if(gameInfo.c === "Rápido") players[name].rapids++;
 
-                    if(margin > maxMargin) { maxMargin = margin; topBrain = name; }
-                    gamesCount[entry.juego] = (gamesCount[entry.juego] || 0) + 1;
+                    if(margin > topMargin) { topMargin = margin; topBrain = name; }
+                    gameStats[entry.juego] = (gameStats[entry.juego] || 0) + 1;
                 });
 
                 const sorted = Object.entries(players).sort((a,b) => b[1].pts - a[1].pts);
-                
-                // Render Tabla
-                document.getElementById('rankingBody').innerHTML = sorted.map(([name, stat], i) => `
+                const leader = sorted[0][1];
+
+                document.getElementById('rankingBody').innerHTML = sorted.map(([name, s], i) => `
                     <tr>
-                        <td class="font-mono opacity-40 text-xs">${i+1}</td>
-                        <td class="font-bold ${name.toLowerCase()==='jorge'?'accent-amber':''}">${name.toUpperCase()}</td>
-                        <td class="text-center font-bold text-gray-400">${stat.wins}</td>
-                        <td class="text-right font-black text-white text-lg">${stat.pts}</td>
+                        <td class="font-mono text-[9px] text-gray-600">${i+1}</td>
+                        <td class="text-left font-bold ${name.toLowerCase()==='jorge'?'accent-amber':''}">${name.toUpperCase()}</td>
+                        <td class="text-gray-400 font-mono">${s.strategy}</td>
+                        <td class="text-gray-400 font-mono">${s.duels}</td>
+                        <td class="text-gray-400 font-mono">${s.rapids}</td>
+                        <td class="text-emerald-500 font-mono">+${s.bonus}</td>
+                        <td class="text-right font-black text-lg">${s.pts}</td>
                     </tr>
                 `).join('');
 
-                // Render Premios
-                const topLuck = Object.entries(players).sort((a,b) => b[1].rapidWins - a[1].rapidWins)[0];
-                const topDuel = Object.entries(players).sort((a,b) => b[1].duelWins - a[1].duelWins)[0];
+                const topLuck = Object.entries(players).sort((a,b) => b[1].rapids - a[1].rapids)[0];
+                const topIron = Object.entries(players).sort((a,b) => b[1].duels - a[1].duels)[0];
 
                 document.getElementById('awardsBody').innerHTML = `
-                    <div class="flex items-center justify-between bg-gray-900/40 p-3 rounded-lg border border-gray-800">
-                        <div class="flex items-center"><span>🧠</span> <div class="ml-3"><p class="text-[8px] text-gray-500 uppercase">El Cerebro</p><p class="text-xs font-bold">${topBrain.toUpperCase()}</p></div></div>
-                        <div class="text-right font-mono text-[10px] accent-amber">+${maxMargin} dif</div>
+                    <div class="bg-gray-900/40 p-3 rounded-lg border border-gray-800">
+                        <div class="flex justify-between items-center"><p class="text-xs font-bold uppercase"><span class="mr-2">🧠</span>El Cerebro</p><p class="text-[10px] accent-amber font-mono">+${topMargin} DIF</p></div>
+                        <p class="text-white font-bold mt-1 text-sm">${topBrain.toUpperCase()}</p>
+                        <p class="text-[8px] text-gray-600 mt-1 italic">${DESCRIPTIONS.cerebro}</p>
                     </div>
-                    <div class="flex items-center justify-between bg-gray-900/40 p-3 rounded-lg border border-gray-800">
-                        <div class="flex items-center"><span>🃏</span> <div class="ml-3"><p class="text-[8px] text-gray-500 uppercase">El Tahúr</p><p class="text-xs font-bold">${topLuck[0].toUpperCase()}</p></div></div>
-                        <div class="text-right font-mono text-[10px] accent-amber">${topLuck[1].rapidWins} vics</div>
+                    <div class="bg-gray-900/40 p-3 rounded-lg border border-gray-800">
+                        <div class="flex justify-between items-center"><p class="text-xs font-bold uppercase"><span class="mr-2">🃏</span>El Tahúr</p><p class="text-[10px] accent-amber font-mono">${topLuck[1].rapids} VICS</p></div>
+                        <p class="text-white font-bold mt-1 text-sm">${topLuck[0].toUpperCase()}</p>
+                        <p class="text-[8px] text-gray-600 mt-1 italic">${DESCRIPTIONS.tahur}</p>
                     </div>
-                    <div class="flex items-center justify-between bg-gray-900/40 p-3 rounded-lg border border-gray-800">
-                        <div class="flex items-center"><span>⚔️</span> <div class="ml-3"><p class="text-[8px] text-gray-500 uppercase">Mano de Hierro</p><p class="text-xs font-bold">${topDuel[0].toUpperCase()}</p></div></div>
-                        <div class="text-right font-mono text-[10px] accent-amber">${topDuel[1].duelWins} vics</div>
+                    <div class="bg-gray-900/40 p-3 rounded-lg border border-gray-800">
+                        <div class="flex justify-between items-center"><p class="text-xs font-bold uppercase"><span class="mr-2">⚔️</span>Mano de Hierro</p><p class="text-[10px] accent-amber font-mono">${topIron[1].duels} VICS</p></div>
+                        <p class="text-white font-bold mt-1 text-sm">${topIron[0].toUpperCase()}</p>
+                        <p class="text-[8px] text-gray-600 mt-1 italic">${DESCRIPTIONS.hierro}</p>
                     </div>
                 `;
 
-                // Render Juegos
-                const topGames = Object.entries(gamesCount).sort((a,b) => b[1] - a[1]).slice(0, 5);
-                document.getElementById('topGamesBody').innerHTML = topGames.map(([game, count]) => `
-                    <div class="flex justify-between items-center bg-gray-900/20 p-2 rounded text-xs">
-                        <span class="text-gray-400">${game}</span>
-                        <span class="font-bold accent-amber">${count}</span>
+                const topGames = Object.entries(gameStats).sort((a,b) => b[1] - a[1]).slice(0, 5);
+                document.getElementById('topGamesBody').innerHTML = topGames.map(([g, c]) => `
+                    <div class="flex justify-between items-center bg-gray-900/30 p-2 rounded text-[10px] font-bold">
+                        <span class="text-gray-400">${g}</span>
+                        <span class="accent-amber">${c} PLAYS</span>
                     </div>
                 `).join('');
 
-            } catch (e) { console.error("Error cargando tabla:", e); }
+            } catch (e) { console.log(e); }
         }
         window.onload = loadData;
     </script>
