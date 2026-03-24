@@ -4,97 +4,100 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>La Guarida de Macaria v2.0</title>
+    <title>La Guarida de Macaria</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
         body { background-color: #090c14; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; }
-        .guarida-card { background-color: #111827; border: 1px solid #1f2937; border-radius: 20px; }
-        .input-style { background-color: #090c14 !important; border: 1px solid #374151 !important; border-radius: 12px; }
+        .guarida-card { background-color: #111827; border: 1px solid #1f2937; border-radius: 16px; }
+        .input-style { background-color: #090c14 !important; border: 1px solid #374151 !important; border-radius: 10px; }
         .accent-amber { color: #f59e0b; }
         .bg-amber { background-color: #f59e0b; color: #000; }
-        .op-btn.active { background-color: #f59e0b; color: #000; }
-        th { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: #6b7280; padding: 12px; }
+        .op-btn.active { background-color: #f59e0b; color: #000; border-color: #f59e0b; }
+        th { font-size: 0.7rem; text-transform: uppercase; color: #6b7280; padding: 12px; border-bottom: 1px solid #1f2937; }
         td { padding: 12px; border-bottom: 1px solid #1f2937; font-size: 0.85rem; }
-        .award-icon { font-size: 1.2rem; margin-right: 8px; }
     </style>
 </head>
 <body class="p-4 md:p-8">
-    <header class="max-w-[1600px] mx-auto mb-10 flex flex-col md:flex-row justify-between items-end border-b border-gray-800 pb-6">
-        <div>
-            <h1 class="text-4xl font-extrabold tracking-tighter uppercase">🐾 LA GUARIDA DE <span class="accent-amber">MACARIA</span></h1>
-            <p id="seasonLabel" class="text-gray-500 text-xs font-bold tracking-[0.3em] mt-2 italic">CDMX | ALPHA KENNEL STATUS</p>
+    <header class="max-w-[1400px] mx-auto mb-10 border-b border-gray-800 pb-6 flex flex-col md:flex-row justify-between items-center">
+        <h1 class="text-3xl font-extrabold tracking-tighter uppercase">🐾 LA GUARIDA DE <span class="accent-amber">MACARIA</span></h1>
+        <div class="flex gap-4 mt-4 md:mt-0 text-[10px] font-bold uppercase text-gray-500">
+            <span id="seasonDisplay">Temporada: Marzo - Abril</span>
+            <span class="text-emerald-500">● Conexión Activa</span>
         </div>
-        <div class="text-[10px] font-mono text-gray-500">VERSION 2.0.0 // SISTEMA DE MÉRITOS ACTIVO</div>
     </header>
 
-    <main class="max-w-[1600px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-8">
+    <main class="max-w-[1400px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-8">
         
-        <section class="xl:col-span-3 space-y-6">
+        <section class="xl:col-span-3">
             <div class="guarida-card p-6 shadow-2xl">
-                <h2 class="text-lg font-bold mb-6 flex items-center">🏆 Registrar Victoria</h2>
+                <h2 class="text-lg font-bold mb-6 flex items-center">🏆 Registrar Partida</h2>
                 <div class="space-y-4">
                     <div class="relative">
-                        <label class="text-[10px] font-bold text-gray-500 uppercase">Juego / Sistema</label>
-                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="Busca tu juego..." class="w-full p-3 mt-1 input-style outline-none focus:ring-1 focus:ring-amber-500 text-sm">
-                        <div id="searchResults" class="hidden absolute z-30 w-full mt-2 max-h-60 overflow-y-auto rounded-xl border border-gray-700 bg-gray-900 shadow-2xl"></div>
+                        <label class="text-[10px] font-bold text-gray-500 uppercase">Nombre del Juego</label>
+                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="¿Qué jugaron?" class="w-full p-3 mt-1 input-style outline-none focus:ring-1 focus:ring-amber-500 text-sm">
+                        <div id="searchResults" class="hidden absolute z-30 w-full mt-2 max-h-60 overflow-y-auto rounded-lg border border-gray-700 bg-gray-900 shadow-2xl"></div>
                     </div>
-                    <div id="manualCat" class="hidden p-3 bg-amber/10 rounded-lg border border-amber/20">
-                        <label class="text-[9px] font-bold accent-amber uppercase">Categoría para juego nuevo:</label>
-                        <select id="categorySelect" class="w-full mt-1 bg-transparent text-xs outline-none">
-                            <option value="Estrategia">Estrategia (10 pts)</option>
-                            <option value="Duelos">Duelos (7 pts)</option>
-                            <option value="Rápidos/Party">Rápidos/Party (5 pts)</option>
-                        </select>
-                    </div>
+                    
                     <div class="grid grid-cols-2 gap-4">
-                        <input type="text" id="winner" placeholder="Ganador" class="w-full p-3 input-style outline-none text-sm">
-                        <input type="number" id="score" placeholder="Puntaje" class="w-full p-3 input-style outline-none text-sm">
+                        <div>
+                            <label class="text-[10px] font-bold text-gray-500 uppercase text-center block">Ganador</label>
+                            <input type="text" id="winner" placeholder="Nombre" class="w-full p-3 mt-1 input-style outline-none text-sm text-center">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-gray-500 uppercase text-center block">Puntaje</label>
+                            <input type="number" id="score" placeholder="Puntos" class="w-full p-3 mt-1 input-style outline-none text-sm text-center">
+                        </div>
                     </div>
-                    <input type="number" id="margin" placeholder="Ventaja vs 2do lugar" class="w-full p-3 input-style outline-none text-sm border-amber-900/30">
+
+                    <label class="text-[10px] font-bold text-gray-500 uppercase block text-center">Ventaja de puntos vs 2do lugar</label>
+                    <input type="number" id="margin" placeholder="Ej: 28" class="w-full p-3 input-style outline-none text-sm text-center border-amber-900/20">
+
                     <div>
-                        <label class="text-[10px] font-bold text-gray-500 uppercase">Oponentes</label>
-                        <div class="flex flex-wrap gap-2 mt-2">
+                        <label class="text-[10px] font-bold text-gray-500 uppercase mb-2 block">Rivales derrotados</label>
+                        <div class="flex flex-wrap gap-2">
                             <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[10px] font-bold bg-gray-800 border border-gray-700 transition-all">Jorge</button>
                             <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[10px] font-bold bg-gray-800 border border-gray-700 transition-all">Claudia</button>
                             <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[10px] font-bold bg-gray-800 border border-gray-700 transition-all">Alan</button>
                             <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[10px] font-bold bg-gray-800 border border-gray-700 transition-all">Marisol</button>
                             <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[10px] font-bold bg-gray-800 border border-gray-700 transition-all">Ivan</button>
                         </div>
-                        <input type="text" id="otherOps" placeholder="Otros..." class="w-full p-2 mt-2 input-style text-xs opacity-50">
                     </div>
-                    <button onclick="logGame()" id="saveBtn" class="w-full bg-amber text-black font-black py-4 rounded-xl mt-2 uppercase tracking-tighter hover:brightness-110 active:scale-95 transition-all">Subir al Registro</button>
+                    <button onclick="logGame()" id="saveBtn" class="w-full bg-amber text-black font-black py-4 rounded-xl mt-4 uppercase tracking-tighter hover:brightness-110 active:scale-95 transition-all">Guardar Partida</button>
                 </div>
             </div>
         </section>
 
         <section class="xl:col-span-9 grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <div class="lg:col-span-7 guarida-card p-6 overflow-hidden">
-                <h2 class="text-sm font-black tracking-[0.2em] uppercase text-gray-500 mb-6">Ranking de Operativos</h2>
-                <table class="w-full">
-                    <thead>
-                        <tr class="text-left border-b border-gray-800">
-                            <th>Pos</th>
-                            <th>Jugador</th>
-                            <th class="text-center">Vics</th>
-                            <th class="text-right">Puntos</th>
-                        </tr>
-                    </thead>
-                    <tbody id="rankingBody">
+            <div class="lg:col-span-8 guarida-card p-6">
+                <h2 class="text-xs font-black tracking-widest uppercase text-gray-500 mb-6">Tabla de Posiciones</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr>
+                                <th>Pos</th>
+                                <th>Jugador</th>
+                                <th class="text-center">Partidas Ganadas</th>
+                                <th class="text-right">Puntos Totales</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rankingBody">
+                            <tr><td colspan="4" class="text-center py-10 opacity-50">Cargando registros...</td></tr>
                         </tbody>
-                </table>
+                    </table>
+                </div>
             </div>
 
-            <div class="lg:col-span-5 space-y-6">
+            <div class="lg:col-span-4 space-y-6">
                 <div class="guarida-card p-6">
-                    <h2 class="text-sm font-black tracking-[0.2em] uppercase text-gray-500 mb-6">Méritos de Temporada</h2>
-                    <div id="meritsBody" class="space-y-4 text-sm">
+                    <h2 class="text-xs font-black tracking-widest uppercase text-gray-500 mb-6">Premios de la Temporada</h2>
+                    <div id="awardsBody" class="space-y-4">
                         </div>
                 </div>
 
                 <div class="guarida-card p-6">
-                    <h2 class="text-sm font-black tracking-[0.2em] uppercase text-gray-500 mb-6">Sistemas más utilizados</h2>
-                    <div id="topGamesBody" class="space-y-3">
+                    <h2 class="text-xs font-black tracking-widest uppercase text-gray-500 mb-6">Juegos más jugados</h2>
+                    <div id="topGamesBody" class="space-y-2">
                         </div>
                 </div>
             </div>
@@ -103,15 +106,13 @@
     </main>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbyZhwzb9UEUtbTxnnW9YnNBwMOEYeRUYvBEPDuA5fwJEXQ-AS9Zk5KBSuOhof6iG7ii/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbzwGRVhRiz8Fq_eFqv7WUklCcPnzAbPXZXgA1xC7cx4OJi2v-7jyXyyzOu6X8Jpnj1Y/exec";
 
         const LUDOTECA = [
             {n: "Ark Nova", c: "Estrategia"}, {n: "Terraforming Mars", c: "Estrategia"}, {n: "The White Castle", c: "Estrategia"},
-            {n: "The White Castle: Matcha", c: "Estrategia"}, {n: "Coffee Rush", c: "Estrategia"}, {n: "Rebirth", c: "Estrategia"},
-            {n: "Marvel Dice Throne", c: "Duelos"}, {n: "7 Wonders Duel", c: "Duelos"}, {n: "Mindbug", c: "Duelos"},
-            {n: "Castle Combo", c: "Rápidos/Party"}, {n: "Trio", c: "Rápidos/Party"}, {n: "Scout", c: "Rápidos/Party"},
-            {n: "The Vale of Eternity", c: "Rápidos/Party"}, {n: "Virus 1", c: "Rápidos/Party"}, {n: "Hot Streak", c: "Rápidos/Party"},
-            {n: "Dragones del Mar", c: "Estrategia"}, {n: "Sushi Go", c: "Rápidos/Party"}, {n: "Exploding Kittens", c: "Rápidos/Party"}
+            {n: "Marvel Dice Throne", c: "Duelo"}, {n: "7 Wonders Duel", c: "Duelo"}, {n: "Mindbug", c: "Duelo"},
+            {n: "Trio", c: "Rápido"}, {n: "Castle Combo", c: "Rápido"}, {n: "Scout", c: "Rápido"},
+            {n: "Coffee Rush", c: "Estrategia"}, {n: "Dragones del Mar", c: "Estrategia"}, {n: "Hot Streak", c: "Rápido"}
         ];
 
         function toggleOp(btn) { btn.classList.toggle('active'); }
@@ -119,13 +120,10 @@
         function filterGames() {
             const input = document.getElementById('gameSearch').value.toLowerCase();
             const res = document.getElementById('searchResults');
-            const manual = document.getElementById('manualCat');
-            if(!input) { res.classList.add('hidden'); manual.classList.add('hidden'); return; }
+            if(!input) { res.classList.add('hidden'); return; }
             const filtered = LUDOTECA.filter(g => g.n.toLowerCase().includes(input));
-            if(filtered.length > 0) {
-                res.innerHTML = filtered.map(g => `<div onclick="selectGame('${g.n}')" class="p-4 hover:bg-amber-500/10 cursor-pointer border-b border-gray-800 text-xs font-bold">${g.n}</div>`).join('');
-                res.classList.remove('hidden'); manual.classList.add('hidden');
-            } else { res.classList.add('hidden'); manual.classList.remove('hidden'); }
+            res.innerHTML = filtered.map(g => `<div onclick="selectGame('${g.n}')" class="p-4 hover:bg-amber-500/10 cursor-pointer border-b border-gray-800 text-xs font-bold">${g.n}</div>`).join('');
+            res.classList.remove('hidden');
         }
 
         function selectGame(n) { document.getElementById('gameSearch').value = n; document.getElementById('searchResults').classList.add('hidden'); }
@@ -137,4 +135,89 @@
                 game: document.getElementById('gameSearch').value,
                 winner: document.getElementById('winner').value,
                 score: Number(document.getElementById('score').value),
-                margin:
+                margin: Number(document.getElementById('margin').value) || 0,
+                opponents: actives.join(', ')
+            };
+            btn.innerText = "Guardando..."; btn.disabled = true;
+            try {
+                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+                location.reload();
+            } catch (e) { alert("Error al guardar"); btn.disabled = false; }
+        }
+
+        async function loadData() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                if(!data || data.length === 0) return;
+
+                const players = {};
+                const gamesCount = {};
+                let maxMargin = 0;
+                let topBrain = "";
+
+                data.forEach(entry => {
+                    const name = entry.ganador;
+                    if(!players[name]) players[name] = { pts: 0, wins: 0, strategyWins: 0, duelWins: 0, rapidWins: 0 };
+                    
+                    const gameInfo = LUDOTECA.find(g => g.n === entry.juego) || {c: "Estrategia"};
+                    let base = gameInfo.c === "Estrategia" ? 10 : gameInfo.c === "Duelo" ? 7 : 5;
+                    let margin = Number(entry.margin) || 0;
+                    let bonus = margin > 15 ? 3 : 0;
+
+                    players[name].pts += (base + bonus);
+                    players[name].wins++;
+                    if(gameInfo.c === "Estrategia") players[name].strategyWins++;
+                    if(gameInfo.c === "Duelo") players[name].duelWins++;
+                    if(gameInfo.c === "Rápido") players[name].rapidWins++;
+
+                    if(margin > maxMargin) { maxMargin = margin; topBrain = name; }
+                    gamesCount[entry.juego] = (gamesCount[entry.juego] || 0) + 1;
+                });
+
+                const sorted = Object.entries(players).sort((a,b) => b[1].pts - a[1].pts);
+                
+                // Render Tabla
+                document.getElementById('rankingBody').innerHTML = sorted.map(([name, stat], i) => `
+                    <tr>
+                        <td class="font-mono opacity-40 text-xs">${i+1}</td>
+                        <td class="font-bold ${name.toLowerCase()==='jorge'?'accent-amber':''}">${name.toUpperCase()}</td>
+                        <td class="text-center font-bold text-gray-400">${stat.wins}</td>
+                        <td class="text-right font-black text-white text-lg">${stat.pts}</td>
+                    </tr>
+                `).join('');
+
+                // Render Premios
+                const topLuck = Object.entries(players).sort((a,b) => b[1].rapidWins - a[1].rapidWins)[0];
+                const topDuel = Object.entries(players).sort((a,b) => b[1].duelWins - a[1].duelWins)[0];
+
+                document.getElementById('awardsBody').innerHTML = `
+                    <div class="flex items-center justify-between bg-gray-900/40 p-3 rounded-lg border border-gray-800">
+                        <div class="flex items-center"><span>🧠</span> <div class="ml-3"><p class="text-[8px] text-gray-500 uppercase">El Cerebro</p><p class="text-xs font-bold">${topBrain.toUpperCase()}</p></div></div>
+                        <div class="text-right font-mono text-[10px] accent-amber">+${maxMargin} dif</div>
+                    </div>
+                    <div class="flex items-center justify-between bg-gray-900/40 p-3 rounded-lg border border-gray-800">
+                        <div class="flex items-center"><span>🃏</span> <div class="ml-3"><p class="text-[8px] text-gray-500 uppercase">El Tahúr</p><p class="text-xs font-bold">${topLuck[0].toUpperCase()}</p></div></div>
+                        <div class="text-right font-mono text-[10px] accent-amber">${topLuck[1].rapidWins} vics</div>
+                    </div>
+                    <div class="flex items-center justify-between bg-gray-900/40 p-3 rounded-lg border border-gray-800">
+                        <div class="flex items-center"><span>⚔️</span> <div class="ml-3"><p class="text-[8px] text-gray-500 uppercase">Mano de Hierro</p><p class="text-xs font-bold">${topDuel[0].toUpperCase()}</p></div></div>
+                        <div class="text-right font-mono text-[10px] accent-amber">${topDuel[1].duelWins} vics</div>
+                    </div>
+                `;
+
+                // Render Juegos
+                const topGames = Object.entries(gamesCount).sort((a,b) => b[1] - a[1]).slice(0, 5);
+                document.getElementById('topGamesBody').innerHTML = topGames.map(([game, count]) => `
+                    <div class="flex justify-between items-center bg-gray-900/20 p-2 rounded text-xs">
+                        <span class="text-gray-400">${game}</span>
+                        <span class="font-bold accent-amber">${count}</span>
+                    </div>
+                `).join('');
+
+            } catch (e) { console.error("Error cargando tabla:", e); }
+        }
+        window.onload = loadData;
+    </script>
+</body>
+</html>
