@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>La Guarida de Macaria v2.4</title>
+    <title>La Guarida de Macaria v2.5</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap');
         body { background-color: #090c14; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -25,26 +25,26 @@
         <div><p class="font-black text-xs uppercase text-black">¡Sello de Macaria!</p><p class="text-[10px] font-bold text-black/80">Victoria registrada.</p></div>
     </div>
 
-    <header class="max-w-[1600px] mx-auto mb-8 border-b border-gray-800 pb-6 flex flex-col md:flex-row justify-between items-center">
+    <header class="max-w-[1600px] mx-auto mb-10 border-b border-gray-800 pb-6 flex flex-col md:flex-row justify-between items-center">
         <div>
-            <h1 class="text-3xl font-extrabold tracking-tighter uppercase italic text-white">🐾 LA GUARIDA DE <span class="accent-amber">MACARIA</span></h1>
+            <h1 class="text-3xl font-extrabold tracking-tighter uppercase italic">🐾 LA GUARIDA DE <span class="accent-amber">MACARIA</span></h1>
             <p class="text-[10px] text-gray-500 font-bold uppercase mt-2">CDMX // MARZO - ABRIL 2026</p>
         </div>
         <div class="flex gap-6 mt-4 md:mt-0 text-[10px] font-bold uppercase text-gray-400">
             <span class="text-emerald-500">● Mesa Lista</span>
-            <span>v2.4.0 Alpha</span>
+            <span>v2.5.0 Alpha</span>
         </div>
     </header>
 
     <main class="max-w-[1600px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-8">
         
         <aside class="xl:col-span-3 space-y-6">
-            <div class="guarida-card p-6 border-t-2 border-amber-500/20">
+            <div class="guarida-card p-6 border-t-2 border-amber-500/20 shadow-2xl">
                 <h2 class="text-sm font-bold mb-6 flex items-center gap-2">🏆 Guardar Resultado</h2>
                 <div class="space-y-4 text-xs">
                     <div class="relative">
-                        <label class="text-[9px] font-bold text-gray-500 uppercase">Juego (61 en lista)</label>
-                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="¿Qué jugaron?" class="w-full p-3 mt-1 input-style outline-none">
+                        <label class="text-[9px] font-bold text-gray-500 uppercase">¿Qué jugaron?</label>
+                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="Buscar juego..." class="w-full p-3 mt-1 input-style outline-none">
                         <div id="searchResults" class="hidden absolute z-30 w-full mt-2 max-h-60 overflow-y-auto rounded-xl border border-gray-700 bg-gray-900 shadow-2xl"></div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
@@ -53,8 +53,7 @@
                     </div>
                     <input type="number" id="margin" placeholder="Diferencial vs 2do" class="w-full p-3 input-style outline-none text-center border-amber-900/30">
                     <div>
-                        <label class="text-[9px] font-bold text-gray-500 uppercase block text-center mb-2 italic">Jugadores</label>
-                        <div class="flex flex-wrap justify-center gap-2">
+                        <div class="flex flex-wrap justify-center gap-2 mt-2">
                             <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Jorge</button>
                             <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Claudia</button>
                             <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Alan</button>
@@ -62,7 +61,7 @@
                             <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Ivan</button>
                         </div>
                     </div>
-                    <button onclick="logGame()" id="saveBtn" class="w-full bg-amber text-black font-black py-4 rounded-xl mt-4 uppercase text-[10px] tracking-widest active:scale-95 transition-all">Subir Resultado</button>
+                    <button onclick="logGame()" id="saveBtn" class="w-full bg-amber text-black font-black py-4 rounded-xl mt-4 uppercase text-[10px] tracking-widest active:scale-95 transition-all">Subir al Registro</button>
                 </div>
             </div>
 
@@ -75,22 +74,23 @@
                     </select>
                     <select id="oraCat" class="w-full p-2 bg-gray-900 border border-gray-800 rounded text-[10px] text-white outline-none">
                         <option value="">Categoría</option>
-                        <option value="Estrategia">Estrategia / Euro</option><option value="Duelos">Duelos (1v1)</option><option value="Rápido">Rápidos / Party</option>
+                        <option value="Estrategia">Estrategia / Euro</option><option value="Duelos">Duelos (1v1)</option><option value="Rápido">Rápido / Party</option>
                     </select>
-                    <button onclick="suggestGame()" class="w-full border border-emerald-500 text-emerald-500 py-2 rounded-lg text-[9px] font-bold uppercase">Consultar Catálogo</button>
-                    <div id="oraResult" class="mt-4 text-[9px] font-bold text-amber-500 hidden bg-emerald-500/5 p-3 rounded max-h-40 overflow-y-auto"></div>
+                    <button onclick="suggestGame()" class="w-full border border-emerald-500 text-emerald-500 py-2 rounded-lg text-[9px] font-bold uppercase hover:bg-emerald-500/10 transition-all">Consultar Catálogo</button>
+                    <div id="oraResult" class="mt-4 text-[9px] font-bold text-amber-500 hidden bg-emerald-500/5 p-3 rounded max-h-48 overflow-y-auto"></div>
                 </div>
             </div>
         </aside>
 
         <section class="xl:col-span-9 grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div class="lg:col-span-8 space-y-8">
-                <div class="guarida-card p-6 overflow-hidden">
+                <div class="guarida-card p-6 overflow-hidden shadow-2xl">
                     <div class="mb-6">
                         <h2 class="text-[10px] font-black tracking-widest uppercase text-gray-500 mb-2 italic">Tabla de Posiciones</h2>
-                        <p class="text-[9px] text-gray-600 bg-gray-900/50 p-2 rounded inline-block">
-                            Pts: Estrategia (10) | Duelo (7) | Rápido (5) | <b class="text-emerald-500">Bono Trucha: +3</b> (Si ventaja >15)
-                        </p>
+                        <div class="bg-gray-900/50 p-3 rounded-lg border border-gray-800 text-[9px] text-gray-400 space-y-1">
+                            <p>● <b class="text-amber-500">Euro/Estrategia:</b> 10 pts | <b class="text-amber-500">Duelo 1v1:</b> 7 pts | <b class="text-amber-500">Rápido/Party:</b> 5 pts</p>
+                            <p>● <b class="text-emerald-500">Bono Trucha:</b> +3 pts si la ventaja es mayor a 15 puntos.</p>
+                        </div>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full">
@@ -113,11 +113,11 @@
             </div>
 
             <div class="lg:col-span-4 space-y-8">
-                <div class="guarida-card p-6">
+                <div class="guarida-card p-6 shadow-xl">
                     <h2 class="text-[10px] font-black tracking-widest uppercase text-gray-500 mb-6 italic">Trofeos de la Casa</h2>
                     <div id="awardsBody" class="space-y-4"></div>
                 </div>
-                <div class="guarida-card p-6">
+                <div class="guarida-card p-6 shadow-xl">
                     <h2 class="text-[10px] font-black tracking-widest uppercase text-gray-500 mb-6 italic">Juegos más jugados</h2>
                     <div id="topGamesBody" class="space-y-2"></div>
                 </div>
@@ -126,7 +126,7 @@
     </main>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbz3XKF8OZ0HdExHlLt8GepMZC4pJTuGTpkOUk0K-ZiSt5xbsScYrFEjPdgqkUbRXTxt/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbzwGRVhRiz8Fq_eFqv7WUklCcPnzAbPXZXgA1xC7cx4OJi2v-7jyXyyzOu6X8Jpnj1Y/exec";
 
         const LUDOTECA = [
             // ESTRATEGIA (10)
@@ -170,12 +170,12 @@
             const p = document.getElementById('oraPlayers').value;
             const c = document.getElementById('oraCat').value;
             const res = document.getElementById('oraResult');
+            if(!c) return alert("Elige categoría");
             res.classList.remove('hidden');
-            let list = LUDOTECA.filter(g => g.c === c);
+            let list = LUDOTECA.filter(g => g.c.includes(c.substring(0,3))); // Match flexible
             if(p === "2") list = list.filter(g => g.p.includes("2"));
             else if(p === "5") list = list.filter(g => g.p.includes("5") || g.p.includes("6") || g.p.includes("8"));
-            
-            res.innerHTML = list.length > 0 ? "<b>Opciones:</b><br>" + list.map(g => `• ${g.n}`).join('<br>') : "Sin opciones exactas.";
+            res.innerHTML = list.length > 0 ? "<b>Opciones de Macaria:</b><br>" + list.map(g => `• ${g.n}`).join('<br>') : "Sin opciones exactas.";
         }
 
         async function loadData() {
@@ -185,15 +185,16 @@
                 if(!data || data.length === 0) return;
 
                 const players = {}; const gamesCount = {};
-                let topMargin = 0; let truchaWinner = "";
+                let topMarginValue = 0; let truchaWinnerName = "";
 
                 data.forEach(entry => {
                     const name = entry.ganador;
                     if(!players[name]) players[name] = { pts: 0, wins: 0, strategy: 0, duels: 0, rapids: 0, bonus: 0 };
-                    const gameInfo = LUDOTECA.find(g => g.n === entry.juego) || {c: "Estrategia"};
+                    
+                    const gameInfo = LUDOTECA.find(g => g.n.toLowerCase() === entry.juego.toLowerCase()) || {c: "Estrategia"};
                     let base = gameInfo.c === "Estrategia" ? 10 : gameInfo.c === "Duelos" ? 7 : 5;
                     
-                    // FIX MARGIN
+                    // LÓGICA DE MARGEN Y BONO
                     let m = Number(entry.margin) || 0;
                     let b = m > 15 ? 3 : 0;
 
@@ -203,7 +204,8 @@
                     if(gameInfo.c === "Estrategia") players[name].strategy++;
                     if(gameInfo.c === "Duelos") players[name].duels++;
                     if(gameInfo.c === "Rápido") players[name].rapids++;
-                    if(m > topMargin) { topMargin = m; truchaWinner = name; }
+
+                    if(m > topMarginValue) { topMarginValue = m; truchaWinnerName = name; }
                     gamesCount[entry.juego] = (gamesCount[entry.juego] || 0) + 1;
                 });
 
@@ -220,7 +222,7 @@
                 document.getElementById('challengesBody').innerHTML = losers.map(l => `
                     <div class="bg-red-500/5 p-3 rounded-lg border border-red-500/20 text-[9px]">
                         <p class="font-bold text-red-400 uppercase">Remontada para ${l[0]}</p>
-                        <p class="text-gray-500 italic mt-1">Si ganas un Euro o logras un margen de +12, Macaria te da <b class="text-emerald-500">+5 PTS</b> manuales.</p>
+                        <p class="text-gray-500 italic mt-1 font-semibold">Gana un Euro o un Duelo para obtener <b class="text-emerald-500">+5 PTS</b> de bono.</p>
                     </div>
                 `).join('');
 
@@ -229,24 +231,24 @@
 
                 document.getElementById('awardsBody').innerHTML = `
                     <div class="bg-gray-900/40 p-3 rounded-xl border border-gray-800">
-                        <div class="flex justify-between items-center text-[9px] font-bold accent-amber uppercase"><span>🌶️ El más trucha</span> <span>+${topMargin} DIF</span></div>
-                        <p class="text-xs font-black mt-1 uppercase">${truchaWinner || 'Vacio'}</p>
+                        <div class="flex justify-between items-center text-[9px] font-bold accent-amber uppercase"><span>🌶️ El más trucha</span> <span>+${topMarginValue} DIF</span></div>
+                        <p class="text-xs font-black mt-1 uppercase">${truchaWinnerName || 'Nadie'}</p>
                         <p class="text-[8px] text-gray-600 italic">Quien ganó con la ventaja más abusiva de la temporada.</p>
                     </div>
                     <div class="bg-gray-900/40 p-3 rounded-xl border border-gray-800">
                         <div class="flex justify-between items-center text-[9px] font-bold accent-amber uppercase"><span>🎰 El mameitor</span> <span>${topMameitor[1].rapids} VICS</span></div>
-                        <p class="text-xs font-black mt-1 uppercase">${topMameitor[1].rapids > 0 ? topMameitor[0] : 'Vacio'}</p>
+                        <p class="text-xs font-black mt-1 uppercase">${topMameitor[1].rapids > 0 ? topMameitor[0] : 'Nadie'}</p>
                         <p class="text-[8px] text-gray-600 italic">El suertudo con más victorias en juegos rápidos.</p>
                     </div>
                     <div class="bg-gray-900/40 p-3 rounded-xl border border-gray-800">
-                        <div class="flex justify-between items-center text-[9px] font-bold accent-amber uppercase"><span>🤴 La Azuky</span> <span>${topAzuky[1].duels} VICS</span></div>
-                        <p class="text-xs font-black mt-1 uppercase">${topAzuky[1].duels > 0 ? topAzuky[0] : 'Sin Rey'}</p>
+                        <div class="flex justify-between items-center text-[9px] font-bold accent-amber uppercase"><span>👸 La Azuky</span> <span>${topAzuky[1].duels} VICS</span></div>
+                        <p class="text-xs font-black mt-1 uppercase">${topAzuky[1].duels > 0 ? topAzuky[0] : 'Nadie'}</p>
                         <p class="text-[8px] text-gray-600 italic">Dominio absoluto en duelos 1 vs 1.</p>
                     </div>
                 `;
 
-                const topGames = Object.entries(gamesCount).sort((a,b) => b[1] - a[1]).slice(0, 5);
-                document.getElementById('topGamesBody').innerHTML = topGames.map(([g, c]) => `
+                const topGamesList = Object.entries(gamesCount).sort((a,b) => b[1] - a[1]).slice(0, 5);
+                document.getElementById('topGamesBody').innerHTML = topGamesList.map(([g, c]) => `
                     <div class="flex justify-between items-center bg-gray-900/30 p-2 rounded text-[9px] font-bold">
                         <span class="text-gray-500 uppercase">${g}</span><span class="accent-amber">${c} PLAYS</span>
                     </div>
