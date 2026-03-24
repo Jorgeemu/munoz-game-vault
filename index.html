@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>La Guarida de Macaria v2.5</title>
+    <title>La Guarida de Macaria v3.0</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap');
         body { background-color: #090c14; color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; }
         .guarida-card { background-color: #111827; border: 1px solid #1f2937; border-radius: 20px; }
-        .input-style { background-color: #090c14 !important; border: 1px solid #374151 !important; border-radius: 10px; }
+        .input-style { background-color: #090c14 !important; border: 1px solid #374151 !important; border-radius: 10px; color: white; }
         .accent-amber { color: #f59e0b; }
         .bg-amber { background-color: #f59e0b; color: #000; }
-        .op-btn.active { background-color: #f59e0b; color: #000; border-color: #f59e0b; }
+        .btn-cdmx { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); transition: 0.3s; }
         th { font-size: 0.6rem; text-transform: uppercase; color: #6b7280; padding: 12px; border-bottom: 1px solid #1f2937; }
         td { padding: 12px; border-bottom: 1px solid #1f2937; font-size: 0.8rem; text-align: center; }
         .toast { position: fixed; top: 20px; right: 20px; transform: translateX(200%); transition: 0.5s; z-index: 100; }
@@ -22,143 +22,176 @@
 <body class="p-4 md:p-8">
     <div id="macariaToast" class="toast bg-amber p-4 rounded-xl shadow-2xl flex items-center gap-4 border-2 border-white">
         <span class="text-3xl">🐾</span>
-        <div><p class="font-black text-xs uppercase text-black">¡Sello de Macaria!</p><p class="text-[10px] font-bold text-black/80">Victoria registrada.</p></div>
+        <div><p class="font-black text-xs uppercase text-black">¡Sello de Macaria!</p><p class="text-[10px] font-bold text-black/80">Partida guardada en el historial.</p></div>
     </div>
 
-    <header class="max-w-[1600px] mx-auto mb-10 border-b border-gray-800 pb-6 flex flex-col md:flex-row justify-between items-center">
+    <header class="max-w-[1600px] mx-auto mb-8 border-b border-gray-800 pb-6 flex justify-between items-end">
         <div>
-            <h1 class="text-3xl font-extrabold tracking-tighter uppercase italic">🐾 LA GUARIDA DE <span class="accent-amber">MACARIA</span></h1>
-            <p class="text-[10px] text-gray-500 font-bold uppercase mt-2">CDMX // MARZO - ABRIL 2026</p>
+            <h1 class="text-3xl font-extrabold uppercase italic tracking-tighter text-white">🐾 LA GUARIDA DE <span class="accent-amber">MACARIA</span></h1>
+            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-2">CDMX // CONTROL DE MISIÓN v3.0</p>
         </div>
-        <div class="flex gap-6 mt-4 md:mt-0 text-[10px] font-bold uppercase text-gray-400">
-            <span class="text-emerald-500">● Mesa Lista</span>
-            <span>v2.5.0 Alpha</span>
-        </div>
+        <span class="text-emerald-500 font-mono text-[10px]">● SISTEMA DE ANOTACIÓN EN VIVO ACTIVO</span>
     </header>
 
     <main class="max-w-[1600px] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-8">
         
-        <aside class="xl:col-span-3 space-y-6">
-            <div class="guarida-card p-6 border-t-2 border-amber-500/20 shadow-2xl">
-                <h2 class="text-sm font-bold mb-6 flex items-center gap-2">🏆 Guardar Resultado</h2>
-                <div class="space-y-4 text-xs">
-                    <div class="relative">
-                        <label class="text-[9px] font-bold text-gray-500 uppercase">¿Qué jugaron?</label>
-                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="Buscar juego..." class="w-full p-3 mt-1 input-style outline-none">
-                        <div id="searchResults" class="hidden absolute z-30 w-full mt-2 max-h-60 overflow-y-auto rounded-xl border border-gray-700 bg-gray-900 shadow-2xl"></div>
+        <section class="xl:col-span-8 space-y-6">
+            <div class="guarida-card p-8 border-t-4 border-amber-500 shadow-2xl">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-xl font-black uppercase italic">🔥 Mesa de Guerra</h2>
+                    <div class="flex gap-4">
+                        <select id="liveGameSelect" class="p-2 input-style text-[10px] uppercase font-bold">
+                            <option value="">Elegir Juego...</option>
+                        </select>
+                        <select id="livePlayersCount" class="p-2 input-style text-[10px] uppercase font-bold">
+                            <option value="2">2 Operativos</option>
+                            <option value="3">3 Operativos</option>
+                            <option value="4">4 Operativos</option>
+                            <option value="5">5+ Operativos</option>
+                        </select>
+                        <button onclick="startSession()" class="bg-amber text-black px-4 py-2 rounded-lg font-black text-[10px] uppercase hover:scale-105 transition-transform">Iniciar Sesión</button>
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <input type="text" id="winner" placeholder="Ganador" class="w-full p-3 input-style outline-none text-center">
-                        <input type="number" id="score" placeholder="Puntos" class="w-full p-3 input-style outline-none text-center">
+                </div>
+
+                <div id="scorecardContainer" class="hidden space-y-6">
+                    <div id="gameTemplateHeader" class="p-4 bg-gray-900/50 rounded-xl border border-gray-800 flex justify-between items-center">
+                        <h3 id="activeGameTitle" class="font-bold accent-amber italic uppercase">Juego</h3>
+                        <p class="text-[9px] text-gray-500">RELLENA LOS PUNTOS DE CADA JUGADOR</p>
                     </div>
-                    <input type="number" id="margin" placeholder="Diferencial vs 2do" class="w-full p-3 input-style outline-none text-center border-amber-900/30">
-                    <div>
-                        <div class="flex flex-wrap justify-center gap-2 mt-2">
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Jorge</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Claudia</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Alan</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Marisol</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1.5 rounded-lg text-[9px] font-bold bg-gray-800 border border-gray-700">Ivan</button>
+                    
+                    <div id="dynamicFields" class="overflow-x-auto">
                         </div>
-                    </div>
-                    <button onclick="logGame()" id="saveBtn" class="w-full bg-amber text-black font-black py-4 rounded-xl mt-4 uppercase text-[10px] tracking-widest active:scale-95 transition-all">Subir al Registro</button>
-                </div>
-            </div>
 
-            <div class="guarida-card p-6 border-l-2 border-emerald-500/30">
-                <h2 class="text-[10px] font-black uppercase text-emerald-500 mb-4 italic">🔮 Oráculo de Macaria</h2>
-                <div class="space-y-4">
-                    <select id="oraPlayers" class="w-full p-2 bg-gray-900 border border-gray-800 rounded text-[10px] text-white outline-none">
-                        <option value="">¿Cuántos son?</option>
-                        <option value="2">2 Personas</option><option value="3">3 Personas</option><option value="4">4 Personas</option><option value="5">5+ Personas</option>
-                    </select>
-                    <select id="oraCat" class="w-full p-2 bg-gray-900 border border-gray-800 rounded text-[10px] text-white outline-none">
-                        <option value="">Categoría</option>
-                        <option value="Estrategia">Estrategia / Euro</option><option value="Duelos">Duelos (1v1)</option><option value="Rápido">Rápido / Party</option>
-                    </select>
-                    <button onclick="suggestGame()" class="w-full border border-emerald-500 text-emerald-500 py-2 rounded-lg text-[9px] font-bold uppercase hover:bg-emerald-500/10 transition-all">Consultar Catálogo</button>
-                    <div id="oraResult" class="mt-4 text-[9px] font-bold text-amber-500 hidden bg-emerald-500/5 p-3 rounded max-h-48 overflow-y-auto"></div>
-                </div>
-            </div>
-        </aside>
-
-        <section class="xl:col-span-9 grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div class="lg:col-span-8 space-y-8">
-                <div class="guarida-card p-6 overflow-hidden shadow-2xl">
-                    <div class="mb-6">
-                        <h2 class="text-[10px] font-black tracking-widest uppercase text-gray-500 mb-2 italic">Tabla de Posiciones</h2>
-                        <div class="bg-gray-900/50 p-3 rounded-lg border border-gray-800 text-[9px] text-gray-400 space-y-1">
-                            <p>● <b class="text-amber-500">Euro/Estrategia:</b> 10 pts | <b class="text-amber-500">Duelo 1v1:</b> 7 pts | <b class="text-amber-500">Rápido/Party:</b> 5 pts</p>
-                            <p>● <b class="text-emerald-500">Bono Trucha:</b> +3 pts si la ventaja es mayor a 15 puntos.</p>
-                        </div>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead>
-                                <tr>
-                                    <th>#</th><th class="text-left">Jugador</th>
-                                    <th>Estrat</th><th>Duelo</th><th>Rápido</th><th>Bono</th>
-                                    <th class="text-right text-amber-500">PTS</th>
-                                </tr>
-                            </thead>
-                            <tbody id="rankingBody"></tbody>
-                        </table>
+                    <div class="flex justify-end pt-6">
+                        <button onclick="finishAndSync()" class="btn-cdmx text-black px-10 py-4 rounded-2xl font-black uppercase tracking-tighter text-xs shadow-xl active:scale-95 transition-all">Partida Terminada - Guardar en Historial</button>
                     </div>
                 </div>
 
-                <div class="guarida-card p-6 border-2 border-dashed border-red-500/20">
-                    <h2 class="text-[10px] font-black tracking-widest uppercase text-red-500 mb-6 italic">⚠️ El Quiebre (Remontada)</h2>
-                    <div id="challengesBody" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                <div id="emptySession" class="py-20 text-center opacity-30 italic text-sm">
+                    Macaria está esperando a que elijas un sistema para empezar el conteo...
                 </div>
             </div>
 
-            <div class="lg:col-span-4 space-y-8">
-                <div class="guarida-card p-6 shadow-xl">
-                    <h2 class="text-[10px] font-black tracking-widest uppercase text-gray-500 mb-6 italic">Trofeos de la Casa</h2>
-                    <div id="awardsBody" class="space-y-4"></div>
+            <div class="guarida-card p-6 overflow-hidden">
+                <h2 class="text-[10px] font-black tracking-widest uppercase text-gray-500 mb-4">Ranking de Temporada</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th>#</th><th class="text-left">Jugador</th><th>Estrat</th><th>Duelo</th><th>Rápido</th><th>Bono</th><th class="text-right accent-amber">PTS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rankingBody"></tbody>
+                    </table>
                 </div>
-                <div class="guarida-card p-6 shadow-xl">
-                    <h2 class="text-[10px] font-black tracking-widest uppercase text-gray-500 mb-6 italic">Juegos más jugados</h2>
-                    <div id="topGamesBody" class="space-y-2"></div>
-                </div>
+            </div>
+        </section>
+
+        <section class="xl:col-span-4 space-y-6">
+            <div class="guarida-card p-6 border-l-4 border-amber-500 shadow-xl">
+                <h2 class="text-[10px] font-black uppercase text-gray-500 mb-6 italic">Trofeos del Barrio</h2>
+                <div id="awardsBody" class="space-y-4"></div>
+            </div>
+
+            <div class="guarida-card p-6 border-l-4 border-emerald-500 shadow-xl">
+                <h2 class="text-[10px] font-black uppercase text-gray-500 mb-6 italic">Juegos más jugados</h2>
+                <div id="topGamesBody" class="space-y-2"></div>
+            </div>
+
+            <div class="guarida-card p-6 border-2 border-dashed border-red-500/20">
+                <h2 class="text-[10px] font-black uppercase text-red-500 mb-4 italic">⚠️ El Quiebre</h2>
+                <div id="challengesBody" class="space-y-3"></div>
             </div>
         </section>
     </main>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbzwGRVhRiz8Fq_eFqv7WUklCcPnzAbPXZXgA1xC7cx4OJi2v-7jyXyyzOu6X8Jpnj1Y/exec";
+        const API_URL = "https://script.google.com/macros/s/AKfycbz3XKF8OZ0HdExHlLt8GepMZC4pJTuGTpkOUk0K-ZiSt5xbsScYrFEjPdgqkUbRXTxt/exec";
 
         const LUDOTECA = [
-            // ESTRATEGIA (10)
-            {n: "Ark Nova", c: "Estrategia", p: "1-4"}, {n: "Terraforming Mars", c: "Estrategia", p: "1-5"}, {n: "The White Castle", c: "Estrategia", p: "1-4"}, {n: "The White Castle: Matcha", c: "Estrategia", p: "1-4"}, {n: "Coffee Rush", c: "Estrategia", p: "2-4"}, {n: "Coffee Rush: Piece of Cake", c: "Estrategia", p: "2-4"}, {n: "Rebirth", c: "Estrategia", p: "2-4"}, {n: "Splendor", c: "Estrategia", p: "2-4"}, {n: "Cities", c: "Estrategia", p: "2-4"}, {n: "Mycelia", c: "Estrategia", p: "1-4"}, {n: "Challengers!", c: "Estrategia", p: "1-8"}, {n: "Nemesis (modo competitivo)", c: "Estrategia", p: "1-5"}, {n: "Catan Plus", c: "Estrategia", p: "3-6"}, {n: "Catan: GOT", c: "Estrategia", p: "3-4"}, {n: "Catan C. y Caballeros", c: "Estrategia", p: "3-4"}, {n: "Catan Mercaderes", c: "Estrategia", p: "3-4"}, {n: "Catan Marítimas", c: "Estrategia", p: "3-4"}, {n: "King of NY", c: "Estrategia", p: "2-6"}, {n: "Dragones del Mar", c: "Estrategia", p: "2-4"}, {n: "Risk", c: "Estrategia", p: "2-6"},
-            // DUELOS (7)
-            {n: "Marvel Dice Throne", c: "Duelos", p: "2"}, {n: "7 Wonders Duel", c: "Duelos", p: "2"}, {n: "Mindbug", c: "Duelos", p: "2"}, {n: "Yokai Sketch", c: "Duelos", p: "2"}, {n: "Ajedrez", c: "Duelos", p: "2"}, {n: "Dominó", c: "Duelos", p: "2-4"}, {n: "Stratego", c: "Duelos", p: "2"}, {n: "King of Tokyo Duel", c: "Duelos", p: "2"}, {n: "Catan Viajeros Duel", c: "Duelos", p: "2"},
-            // RÁPIDOS (5)
-            {n: "Castle Combo", c: "Rápido", p: "2-5"}, {n: "Trio", c: "Rápido", p: "3-6"}, {n: "Scout", c: "Rápido", p: "2-5"}, {n: "The Vale of Eternity", c: "Rápido", p: "2-4"}, {n: "Catfe", c: "Rápido", p: "2-4"}, {n: "Sushi Go", c: "Rápido", p: "2-5"}, {n: "Sushi Go: Dim Sum", c: "Rápido", p: "2-5"}, {n: "Draftosaurus", c: "Rápido", p: "2-5"}, {n: "Hot Streak", c: "Rápido", p: "2-5"}, {n: "Ouch!", c: "Rápido", p: "2-5"}, {n: "Hitster", c: "Rápido", p: "2-20"}, {n: "Suspend", c: "Rápido", p: "1-4"}, {n: "Polilla Tramposa", c: "Rápido", p: "3-5"}, {n: "Virus 1", c: "Rápido", p: "2-6"}, {n: "Virus 2", c: "Rápido", p: "2-6"}, {n: "Taco Gato...", c: "Rápido", p: "2-8"}, {n: "Fantasma Blitz", c: "Rápido", p: "2-8"}, {n: "Throw Throw Burrito", c: "Rápido", p: "2-6"}, {n: "Exploding Kittens", c: "Rápido", p: "2-5"}, {n: "Tetris", c: "Rápido", p: "1-4"}, {n: "Basta", c: "Rápido", p: "2-8"}, {n: "Uno", c: "Rápido", p: "2-10"}, {n: "Código Secreto", c: "Rápido", p: "2-8"}, {n: "Little Secret", c: "Rápido", p: "3-10"}, {n: "Wanted", c: "Rápido", p: "3-6"}, {n: "That's not a hat", c: "Rápido", p: "3-8"}, {n: "Dixit", c: "Rápido", p: "3-6"}, {n: "Reyes de la Rosca", c: "Rápido", p: "2-6"}, {n: "Pokémon Babanuki", c: "Rápido", p: "2-8"}
+            {n: "Ark Nova", c: "Estrategia", fields: ["Atractivo", "Conservación", "Bonos"]},
+            {n: "Terraforming Mars", c: "Estrategia", fields: ["TR", "Hitos", "Recompensas", "Tablero"]},
+            {n: "Marvel Dice Throne", c: "Duelos", fields: ["HP Final", "Energía"]},
+            {n: "7 Wonders Duel", c: "Duelos", fields: ["Civil", "Ciencia", "Militar", "Oro"]},
+            {n: "The White Castle", c: "Estrategia", fields: ["Puntos Finales"]},
+            {n: "Castle Combo", c: "Rápido", fields: ["Puntos Finales"]},
+            {n: "Trio", c: "Rápido", fields: ["Sets Ganados"]},
+            {n: "Scout", c: "Rápido", fields: ["Puntos Finales"]},
+            {n: "Coffee Rush", c: "Estrategia", fields: ["Pedidos", "Mejoras"]},
+            {n: "Dragones del Mar", c: "Estrategia", fields: ["Puntos Finales"]}
         ];
 
-        function toggleOp(btn) { btn.classList.toggle('active'); }
-        function filterGames() {
-            const input = document.getElementById('gameSearch').value.toLowerCase();
-            const res = document.getElementById('searchResults');
-            if(!input) { res.classList.add('hidden'); return; }
-            const filtered = LUDOTECA.filter(g => g.n.toLowerCase().includes(input));
-            res.innerHTML = filtered.map(g => `<div onclick="selectGame('${g.n}')" class="p-3 hover:bg-amber-500/10 cursor-pointer border-b border-gray-800 font-bold text-[11px]">${g.n}</div>`).join('');
-            res.classList.remove('hidden');
-        }
-        function selectGame(n) { document.getElementById('gameSearch').value = n; document.getElementById('searchResults').classList.add('hidden'); }
+        // Llenar selector de juegos
+        const liveSelect = document.getElementById('liveGameSelect');
+        LUDOTECA.forEach(g => {
+            const opt = document.createElement('option');
+            opt.value = g.n; opt.innerText = g.n;
+            liveSelect.appendChild(opt);
+        });
 
-        async function logGame() {
-            const btn = document.getElementById('saveBtn');
-            const actives = Array.from(document.querySelectorAll('.op-btn.active')).map(b => b.innerText);
+        // INICIAR SESIÓN DE JUEGO
+        function startSession() {
+            const gameName = liveSelect.value;
+            const pCount = document.getElementById('livePlayersCount').value;
+            if(!gameName) return alert("Elige un juego, Jorge.");
+
+            document.getElementById('emptySession').classList.add('hidden');
+            document.getElementById('scorecardContainer').classList.remove('hidden');
+            document.getElementById('activeGameTitle').innerText = gameName;
+
+            const game = LUDOTECA.find(g => g.n === gameName) || {fields: ["Puntos Finales"]};
+            const container = document.getElementById('dynamicFields');
+            
+            let html = `<table class="w-full text-left"><thead><tr><th class="text-left">Jugador</th>`;
+            game.fields.forEach(f => html += `<th class="text-center">${f}</th>`);
+            html += `<th class="text-center accent-amber">TOTAL</th></tr></thead><tbody>`;
+
+            for(let i=0; i<pCount; i++) {
+                html += `<tr>
+                    <td><input type="text" placeholder="Nombre" class="player-name w-full p-2 input-style text-xs"></td>
+                    ${game.fields.map((f, idx) => `<td><input type="number" oninput="calcTotal(${i})" class="score-input-${i} w-16 p-2 input-style text-center text-xs" value="0"></td>`).join('')}
+                    <td><span id="total-player-${i}" class="final-total font-black text-lg">0</span></td>
+                </tr>`;
+            }
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+        }
+
+        function calcTotal(playerIdx) {
+            const inputs = document.querySelectorAll(`.score-input-${playerIdx}`);
+            let total = 0;
+            inputs.forEach(input => total += Number(input.value));
+            document.getElementById(`total-player-${playerIdx}`).innerText = total;
+        }
+
+        // TERMINAR Y ENVIAR A GOOGLE SHEETS
+        async function finishAndSync() {
+            const names = Array.from(document.querySelectorAll('.player-name')).map(i => i.value);
+            const totals = Array.from(document.querySelectorAll('.final-total')).map(i => Number(i.innerText));
+            const game = document.getElementById('activeGameTitle').innerText;
+
+            if(names.some(n => !n)) return alert("Ponle nombre a los jugadores.");
+
+            // Encontrar ganador y segundo lugar para el margen
+            const results = names.map((name, i) => ({ name, score: totals[i] }));
+            results.sort((a,b) => b.score - a.score);
+
+            const winner = results[0];
+            const runnerUp = results[1] || {score: 0};
+            const margin = winner.score - runnerUp.score;
+            const opponents = names.filter(n => n !== winner.name).join(', ');
+
             const data = {
-                game: document.getElementById('gameSearch').value,
-                winner: document.getElementById('winner').value,
-                score: Number(document.getElementById('score').value),
-                margin: Number(document.getElementById('margin').value) || 0,
-                opponents: actives.join(', ')
+                game: game,
+                winner: winner.name,
+                score: winner.score,
+                margin: margin,
+                opponents: opponents
             };
-            btn.innerText = "ESPERA..."; btn.disabled = true;
+
+            const btn = event.target;
+            btn.innerText = "SINCRONIZANDO..."; btn.disabled = true;
+
             try {
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
                 document.getElementById('macariaToast').classList.add('show');
@@ -166,18 +199,7 @@
             } catch (e) { alert("Error"); btn.disabled = false; }
         }
 
-        function suggestGame() {
-            const p = document.getElementById('oraPlayers').value;
-            const c = document.getElementById('oraCat').value;
-            const res = document.getElementById('oraResult');
-            if(!c) return alert("Elige categoría");
-            res.classList.remove('hidden');
-            let list = LUDOTECA.filter(g => g.c.includes(c.substring(0,3))); // Match flexible
-            if(p === "2") list = list.filter(g => g.p.includes("2"));
-            else if(p === "5") list = list.filter(g => g.p.includes("5") || g.p.includes("6") || g.p.includes("8"));
-            res.innerHTML = list.length > 0 ? "<b>Opciones de Macaria:</b><br>" + list.map(g => `• ${g.n}`).join('<br>') : "Sin opciones exactas.";
-        }
-
+        // CARGA DE DATOS EXISTENTE (Ranking, Premios, etc.)
         async function loadData() {
             try {
                 const response = await fetch(API_URL);
@@ -185,16 +207,13 @@
                 if(!data || data.length === 0) return;
 
                 const players = {}; const gamesCount = {};
-                let topMarginValue = 0; let truchaWinnerName = "";
+                let topMargin = 0; let truchaWinner = "";
 
                 data.forEach(entry => {
                     const name = entry.ganador;
                     if(!players[name]) players[name] = { pts: 0, wins: 0, strategy: 0, duels: 0, rapids: 0, bonus: 0 };
-                    
-                    const gameInfo = LUDOTECA.find(g => g.n.toLowerCase() === entry.juego.toLowerCase()) || {c: "Estrategia"};
-                    let base = gameInfo.c === "Estrategia" ? 10 : gameInfo.c === "Duelos" ? 7 : 5;
-                    
-                    // LÓGICA DE MARGEN Y BONO
+                    const gameInfo = LUDOTECA.find(g => g.n === entry.juego) || {c: "Estrategia"};
+                    let base = gameInfo.c === "Estrategia" ? 10 : gameInfo.c === "Duelo" ? 7 : 5;
                     let m = Number(entry.margin) || 0;
                     let b = m > 15 ? 3 : 0;
 
@@ -202,28 +221,17 @@
                     players[name].wins++;
                     players[name].bonus += b;
                     if(gameInfo.c === "Estrategia") players[name].strategy++;
-                    if(gameInfo.c === "Duelos") players[name].duels++;
+                    if(gameInfo.c === "Duelo") players[name].duels++;
                     if(gameInfo.c === "Rápido") players[name].rapids++;
-
-                    if(m > topMarginValue) { topMarginValue = m; truchaWinnerName = name; }
+                    if(m > topMargin) { topMargin = m; truchaWinner = name; }
                     gamesCount[entry.juego] = (gamesCount[entry.juego] || 0) + 1;
                 });
 
                 const sorted = Object.entries(players).sort((a,b) => b[1].pts - a[1].pts);
                 document.getElementById('rankingBody').innerHTML = sorted.map(([name, s], i) => `
-                    <tr><td class="font-mono text-[9px] opacity-40">${i+1}</td>
-                    <td class="text-left font-bold ${name.toLowerCase()==='jorge'?'accent-amber':''}">${name.toUpperCase()}</td>
-                    <td class="text-gray-500 font-mono">${s.strategy}</td><td class="text-gray-500 font-mono">${s.duels}</td>
-                    <td class="text-gray-500 font-mono">${s.rapids}</td><td class="text-emerald-500 font-mono">+${s.bonus}</td>
+                    <tr><td>${i+1}</td><td class="text-left font-bold ${name.toLowerCase()==='jorge'?'accent-amber':''}">${name.toUpperCase()}</td>
+                    <td>${s.strategy}</td><td>${s.duels}</td><td>${s.rapids}</td><td class="text-emerald-500">+${s.bonus}</td>
                     <td class="text-right font-black text-white text-lg">${s.pts}</td></tr>
-                `).join('');
-
-                const losers = sorted.slice(-2);
-                document.getElementById('challengesBody').innerHTML = losers.map(l => `
-                    <div class="bg-red-500/5 p-3 rounded-lg border border-red-500/20 text-[9px]">
-                        <p class="font-bold text-red-400 uppercase">Remontada para ${l[0]}</p>
-                        <p class="text-gray-500 italic mt-1 font-semibold">Gana un Euro o un Duelo para obtener <b class="text-emerald-500">+5 PTS</b> de bono.</p>
-                    </div>
                 `).join('');
 
                 const topMameitor = Object.entries(players).sort((a,b) => b[1].rapids - a[1].rapids)[0];
@@ -231,28 +239,24 @@
 
                 document.getElementById('awardsBody').innerHTML = `
                     <div class="bg-gray-900/40 p-3 rounded-xl border border-gray-800">
-                        <div class="flex justify-between items-center text-[9px] font-bold accent-amber uppercase"><span>🌶️ El más trucha</span> <span>+${topMarginValue} DIF</span></div>
-                        <p class="text-xs font-black mt-1 uppercase">${truchaWinnerName || 'Nadie'}</p>
-                        <p class="text-[8px] text-gray-600 italic">Quien ganó con la ventaja más abusiva de la temporada.</p>
+                        <p class="text-[9px] font-bold accent-amber uppercase">🌶️ El más trucha (+${topMargin} dif)</p>
+                        <p class="text-sm font-black uppercase">${truchaWinner || 'Vacante'}</p>
                     </div>
                     <div class="bg-gray-900/40 p-3 rounded-xl border border-gray-800">
-                        <div class="flex justify-between items-center text-[9px] font-bold accent-amber uppercase"><span>🎰 El mameitor</span> <span>${topMameitor[1].rapids} VICS</span></div>
-                        <p class="text-xs font-black mt-1 uppercase">${topMameitor[1].rapids > 0 ? topMameitor[0] : 'Nadie'}</p>
-                        <p class="text-[8px] text-gray-600 italic">El suertudo con más victorias en juegos rápidos.</p>
+                        <p class="text-[9px] font-bold accent-amber uppercase">🎰 El mameitor (${topMameitor[1].rapids} vics)</p>
+                        <p class="text-sm font-black uppercase">${topMameitor[0]}</p>
                     </div>
                     <div class="bg-gray-900/40 p-3 rounded-xl border border-gray-800">
-                        <div class="flex justify-between items-center text-[9px] font-bold accent-amber uppercase"><span>👸 La Azuky</span> <span>${topAzuky[1].duels} VICS</span></div>
-                        <p class="text-xs font-black mt-1 uppercase">${topAzuky[1].duels > 0 ? topAzuky[0] : 'Nadie'}</p>
-                        <p class="text-[8px] text-gray-600 italic">Dominio absoluto en duelos 1 vs 1.</p>
-                    </div>
-                `;
+                        <p class="text-[9px] font-bold accent-amber uppercase">👸 La Azuky (${topAzuky[1].duels} vics)</p>
+                        <p class="text-sm font-black uppercase">${topAzuky[0]}</p>
+                    </div>`;
 
-                const topGamesList = Object.entries(gamesCount).sort((a,b) => b[1] - a[1]).slice(0, 5);
-                document.getElementById('topGamesBody').innerHTML = topGamesList.map(([g, c]) => `
+                const topGames = Object.entries(gamesCount).sort((a,b) => b[1] - a[1]).slice(0, 5);
+                document.getElementById('topGamesBody').innerHTML = topGames.map(([g, c]) => `
                     <div class="flex justify-between items-center bg-gray-900/30 p-2 rounded text-[9px] font-bold">
-                        <span class="text-gray-500 uppercase">${g}</span><span class="accent-amber">${c} PLAYS</span>
-                    </div>
-                `).join('');
+                        <span class="text-gray-400 uppercase">${g}</span><span class="accent-amber">${c} PLAYS</span>
+                    </div>`).join('');
+
             } catch (e) { console.error(e); }
         }
         window.onload = loadData;
