@@ -4,135 +4,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Muñoz | Apex Predator v1.6.1</title>
+    <title>Muñoz | The Octagon v1.7</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-        body { background-color: #0f172a; color: #f1f5f9; font-family: 'Inter', sans-serif; }
-        .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 12px; }
-        input, .search-results { background-color: #0f172a !important; border: 1px solid #475569 !important; }
-        .btn-primary { background-color: #0284c7; transition: 0.2s; cursor: pointer; }
-        .btn-primary:hover { background-color: #0ea5e9; }
-        .badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap');
+        body { background-color: #0b0f1a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .card { background-color: #161c2d; border: 1px solid #1e293b; border-radius: 16px; }
+        .input-dark { background-color: #0b0f1a !important; border: 1px solid #334155 !important; color: #f8fafc !important; }
+        .btn-action { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); transition: 0.3s; }
+        .btn-action:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(2, 132, 199, 0.4); }
         .op-btn.active { background-color: #0ea5e9; border-color: #38bdf8; color: white; }
+        .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #64748b; text-transform: uppercase; }
+        .stat-value { font-family: 'JetBrains Mono', monospace; font-weight: 800; color: #f8fafc; }
     </style>
 </head>
-<body class="p-4 md:p-8">
-    <header class="max-w-7xl mx-auto mb-8 border-b border-slate-800 pb-6 flex justify-between items-end">
+<body class="p-4 md:p-10">
+    <header class="max-w-7xl mx-auto mb-10 border-b border-slate-800 pb-8 flex justify-between items-center">
         <div>
-            <h1 class="text-3xl font-bold text-white tracking-tight">Muñoz Game Vault <span class="text-sky-500 text-sm ml-2 font-mono uppercase">v1.6.1</span></h1>
-            <p id="seasonLabel" class="text-emerald-400 text-xs font-bold uppercase tracking-widest mt-1">Temporada: Cargando...</p>
+            <h1 class="text-4xl font-extrabold text-white tracking-tighter">Muñoz Game Vault <span class="text-sky-500">v1.7</span></h1>
+            <p id="seasonLabel" class="text-sky-400/60 text-xs font-bold uppercase tracking-[0.2em] mt-2 italic">Temporada: Cargando...</p>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
         <section class="lg:col-span-4 space-y-6">
-            <div class="card p-6 shadow-2xl">
-                <h2 class="text-lg font-semibold mb-6 text-white flex items-center">📝 Nuevo Log de Combate</h2>
-                <div class="space-y-4">
+            <div class="card p-8 shadow-2xl border-t-4 border-sky-500">
+                <h2 class="text-xl font-bold mb-8 text-white flex items-center">
+                    <span class="bg-sky-500/10 text-sky-500 p-2 rounded-lg mr-3">⚡</span> Inyectar Victoria
+                </h2>
+                
+                <div class="space-y-5">
                     <div class="relative">
-                        <label class="text-[10px] font-bold text-slate-500 uppercase">Sistema / Juego</label>
-                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="Buscar o escribir juego nuevo..." autocomplete="off" class="w-full p-3 mt-1 rounded-lg text-sm outline-none focus:border-sky-500">
-                        <div id="searchResults" class="hidden absolute z-20 w-full mt-1 max-h-48 overflow-y-auto rounded-lg border border-slate-700 bg-slate-900 shadow-xl"></div>
+                        <label class="stat-label">Buscador de Sistemas</label>
+                        <input type="text" id="gameSearch" oninput="filterGames()" placeholder="Ark Nova, Trio, etc..." class="w-full p-3 mt-1 rounded-xl text-sm input-dark outline-none focus:ring-2 focus:ring-sky-500">
+                        <div id="searchResults" class="hidden absolute z-30 w-full mt-2 max-h-60 overflow-y-auto rounded-xl border border-slate-700 bg-slate-900 shadow-2xl"></div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase">Ganador</label>
-                            <input type="text" id="winner" placeholder="Nombre" class="w-full p-3 mt-1 rounded-lg text-sm outline-none">
+                            <label class="stat-label text-emerald-400">Ganador</label>
+                            <input type="text" id="winner" placeholder="Nombre" class="w-full p-3 mt-1 rounded-xl text-sm input-dark outline-none">
                         </div>
                         <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase">Puntaje</label>
-                            <input type="number" id="score" placeholder="Total" class="w-full p-3 mt-1 rounded-lg text-sm outline-none">
+                            <label class="stat-label">Puntaje</label>
+                            <input type="number" id="score" placeholder="Total" class="w-full p-3 mt-1 rounded-xl text-sm input-dark outline-none">
                         </div>
                     </div>
 
                     <div>
-                        <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Submission Margin (Diferencial vs 2do)</label>
-                        <input type="number" id="margin" placeholder="¿Por cuánto ganaste?" class="w-full p-3 rounded-lg text-sm outline-none bg-slate-900 border border-slate-700">
+                        <label class="stat-label text-pink-500 italic">Submission Margin (vs 2do)</label>
+                        <input type="number" id="margin" placeholder="Puntos de ventaja" class="w-full p-3 mt-1 rounded-xl text-sm input-dark outline-none">
                     </div>
 
                     <div>
-                        <label class="text-[10px] font-bold text-slate-500 uppercase block mb-2">Oponentes Sometidos</label>
-                        <div id="opContainer" class="flex flex-wrap gap-2 mb-3">
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800 border border-slate-700">Jorge</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800 border border-slate-700">Claudia</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800 border border-slate-700">Alan</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800 border border-slate-700">Marisol</button>
-                            <button onclick="toggleOp(this)" class="op-btn px-3 py-1 rounded-md text-xs text-slate-400 bg-slate-800 border border-slate-700">Ivan</button>
+                        <label class="stat-label">Oponentes Sometidos</label>
+                        <div id="opContainer" class="flex flex-wrap gap-2 mt-2">
+                            <button onclick="toggleOp(this)" class="op-btn px-4 py-1.5 rounded-full text-[10px] font-bold text-slate-400 bg-slate-800 border border-slate-700">Jorge</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-4 py-1.5 rounded-full text-[10px] font-bold text-slate-400 bg-slate-800 border border-slate-700">Claudia</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-4 py-1.5 rounded-full text-[10px] font-bold text-slate-400 bg-slate-800 border border-slate-700">Alan</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-4 py-1.5 rounded-full text-[10px] font-bold text-slate-400 bg-slate-800 border border-slate-700">Marisol</button>
+                            <button onclick="toggleOp(this)" class="op-btn px-4 py-1.5 rounded-full text-[10px] font-bold text-slate-400 bg-slate-800 border border-slate-700">Ivan</button>
                         </div>
-                        <input type="text" id="otherOps" placeholder="Otros oponentes..." class="w-full p-3 rounded-lg text-sm outline-none bg-slate-900 border border-slate-700">
+                        <input type="text" id="otherOps" placeholder="Otros invitados..." class="w-full p-3 mt-3 rounded-xl text-sm input-dark outline-none opacity-50 focus:opacity-100">
                     </div>
 
-                    <button id="saveBtn" onclick="logGame()" class="w-full btn-primary text-white font-bold py-4 rounded-lg mt-2 shadow-lg uppercase tracking-widest text-xs">Inyectar Victoria</button>
+                    <button id="saveBtn" onclick="logGame()" class="w-full btn-action text-white font-black py-4 rounded-xl mt-4 uppercase tracking-widest text-xs">Registrar Dominación</button>
                 </div>
             </div>
         </section>
 
-        <section class="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6" id="rankingsContainer">
-            <div class="col-span-full py-20 text-center text-slate-500 italic">Analizando registros de temporada...</div>
+        <section class="lg:col-span-8 space-y-8">
+            <h2 class="stat-label text-lg tracking-[0.4em] mb-4">Temporada en curso: Intelligence Report</h2>
+            <div id="rankingsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                </div>
         </section>
     </main>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbwTBSlsPWgNL26KThTrfLXR1YaByMifinJL56uj73I4UB7fdU3KKf9fLIoHWslGoxTb/exec";
-
-        const getSeason = () => {
-            const date = new Date();
-            const month = date.getMonth(); 
-            const year = date.getFullYear();
-            const bimonthly = Math.floor(month / 2) + 1;
-            const names = ["Ene-Feb", "Mar-Abr", "May-Jun", "Jul-Ago", "Sep-Oct", "Nov-Dic"];
-            return { id: `${year}-${bimonthly}`, label: `Temporada ${bimonthly}: ${names[bimonthly-1]} ${year}`, startMonth: Math.floor(month/2)*2 };
-        };
-
-        const currentSeason = getSeason();
-        document.getElementById('seasonLabel').innerText = currentSeason.label;
+        const API_URL = "https://script.google.com/macros/s/AKfycbz3XKF8OZ0HdExHlLt8GepMZC4pJTuGTpkOUk0K-ZiSt5xbsScYrFEjPdgqkUbRXTxt/exec";
 
         const ALL_GAMES = [
+            // Estrategia (10 pts)
             {n: "Ark Nova", c: "Estrategia"}, {n: "Terraforming Mars", c: "Estrategia"}, {n: "The White Castle", c: "Estrategia"}, 
-            {n: "The White Castle: Matcha", c: "Estrategia"}, {n: "Coffee Rush", c: "Estrategia"}, {n: "Mindbug", c: "Duelos"}, 
-            {n: "7 Wonders Duel", c: "Duelos"}, {n: "Marvel Dice Throne", c: "Duelos"}, {n: "Trio", c: "Rápidos"}, {n: "Scout", c: "Rápidos"}
-            // El buscador permitirá escribir cualquier otro nombre
+            {n: "The White Castle: Matcha", c: "Estrategia"}, {n: "Coffee Rush", c: "Estrategia"}, {n: "Rebirth", c: "Estrategia"}, 
+            {n: "Splendor", c: "Estrategia"}, {n: "Cities", c: "Estrategia"}, {n: "Mycelia", c: "Estrategia"},
+            {n: "Challengers!", c: "Estrategia"}, {n: "Nemesis (Competitivo)", c: "Estrategia"}, {n: "Catan Plus", c: "Estrategia"},
+            // Duelos (7 pts)
+            {n: "Marvel Dice Throne", c: "Duelos"}, {n: "7 Wonders Duel", c: "Duelos"}, {n: "Mindbug", c: "Duelos"}, 
+            {n: "Yokai Sketch", c: "Duelos"}, {n: "Ajedrez", c: "Duelos"}, {n: "Dominó", c: "Duelos"}, 
+            {n: "Stratego", c: "Duelos"}, {n: "King of Tokyo Duel", c: "Duelos"},
+            // Rápidos / Party (5 pts)
+            {n: "Castle Combo", c: "Rápidos"}, {n: "Trio", c: "Rápidos"}, {n: "Scout", c: "Rápidos"}, 
+            {n: "The Vale of Eternity", c: "Rápidos"}, {n: "Hitster", c: "Party"}, {n: "Virus 1", c: "Party"},
+            {n: "Exploding Kittens", c: "Party"}, {n: "Taco Gato Cabra...", c: "Party"}
         ];
+
+        // LOGICA DE TEMPORADA
+        const date = new Date();
+        const names = ["Ene-Feb", "Mar-Abr", "May-Jun", "Jul-Ago", "Sep-Oct", "Nov-Dic"];
+        const bimonthlyIdx = Math.floor(date.getMonth() / 2);
+        document.getElementById('seasonLabel').innerText = `TEMPORADA ${bimonthlyIdx + 1}: ${names[bimonthlyIdx]} ${date.getFullYear()}`;
 
         function toggleOp(btn) { btn.classList.toggle('active'); }
 
         function filterGames() {
             const input = document.getElementById('gameSearch').value.toLowerCase();
-            const results = document.getElementById('searchResults');
-            if(!input) { results.classList.add('hidden'); return; }
+            const res = document.getElementById('searchResults');
+            if(!input) { res.classList.add('hidden'); return; }
             const filtered = ALL_GAMES.filter(g => g.n.toLowerCase().includes(input));
-            results.innerHTML = filtered.map(g => `<div onclick="selectGame('${g.n}')" class="p-3 hover:bg-slate-800 cursor-pointer text-xs border-b border-slate-800 text-white">${g.n} <span class="text-slate-500 italic ml-2">(${g.c})</span></div>`).join('');
-            results.classList.remove('hidden');
+            res.innerHTML = filtered.map(g => `<div onclick="selectGame('${g.n}')" class="p-4 hover:bg-sky-500/20 cursor-pointer border-b border-slate-800 text-sm text-white font-bold">${g.n} <span class="text-[9px] text-slate-500 uppercase ml-2">${g.c}</span></div>`).join('');
+            res.classList.remove('hidden');
         }
 
-        function selectGame(name) {
-            document.getElementById('gameSearch').value = name;
-            document.getElementById('searchResults').classList.add('hidden');
-        }
+        function selectGame(n) { document.getElementById('gameSearch').value = n; document.getElementById('searchResults').classList.add('hidden'); }
 
         async function logGame() {
             const btn = document.getElementById('saveBtn');
             const actives = Array.from(document.querySelectorAll('.op-btn.active')).map(b => b.innerText);
-            const others = document.getElementById('otherOps').value;
-            const opponents = [actives.join(', '), others].filter(x => x).join(', ');
-
             const data = {
                 game: document.getElementById('gameSearch').value,
                 winner: document.getElementById('winner').value,
                 score: document.getElementById('score').value,
                 margin: document.getElementById('margin').value || 0,
-                opponents: opponents
+                opponents: [actives.join(', '), document.getElementById('otherOps').value].filter(x => x).join(', ')
             };
 
-            if(!data.game || !data.winner) { alert("Error: Faltan datos."); return; }
-            btn.innerText = "INYECTANDO..."; btn.disabled = true;
+            if(!data.game || !data.winner) { alert("ERROR: Ingrese sistema y ganador."); return; }
+            btn.innerText = "Sincronizando..."; btn.disabled = true;
 
             try {
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                alert("Victoria registrada.");
-                location.reload();
-            } catch (e) { alert("Error."); btn.disabled = false; }
+                alert("DOMINACIÓN REGISTRADA."); location.reload();
+            } catch (e) { alert("Error de enlace."); btn.disabled = false; }
         }
 
         async function loadRankings() {
@@ -142,36 +145,67 @@
                 const data = await response.json();
                 container.innerHTML = "";
 
-                const stats = { "Estrategia": {}, "Duelos": {}, "Rápidos": {}, "Party": {} };
+                const playerStats = {};
 
                 data.forEach(entry => {
-                    // Filtrar por temporada 2026
-                    const date = new Date(entry.timestamp);
-                    if(date.getFullYear() !== 2026 || date.getMonth() < currentSeason.startMonth) return;
+                    const d = new Date(entry.timestamp);
+                    if(d.getMonth() < bimonthlyIdx * 2) return; // Filtro bimestre
+
+                    const name = entry.ganador;
+                    if(!name) return;
 
                     const gameObj = ALL_GAMES.find(g => g.n === entry.juego) || {c: "Estrategia"};
-                    const winner = entry.ganador;
-                    if(winner) stats[gameObj.c][winner] = (stats[gameObj.c][winner] || 0) + 1;
+                    let pts = gameObj.c === "Estrategia" ? 10 : gameObj.c === "Duelos" ? 7 : 5;
+                    
+                    // Bono de Sometimiento (Margin)
+                    const margin = parseInt(entry.margin) || 0;
+                    const bonus = margin > (parseInt(entry.score) * 0.2) ? 3 : 0;
+
+                    if(!playerStats[name]) playerStats[name] = { totalPts: 0, wins: 0, subs: 0, games: {} };
+                    
+                    playerStats[name].totalPts += (pts + bonus);
+                    playerStats[name].wins++;
+                    if(bonus > 0) playerStats[name].subs++;
+                    playerStats[name].games[entry.juego] = (playerStats[name].games[entry.juego] || 0) + 1;
                 });
 
-                Object.keys(stats).forEach(cat => {
-                    const players = Object.entries(stats[cat]).sort((a,b) => b[1] - a[1]);
-                    container.innerHTML += `
-                        <div class="card p-6 shadow-xl border-l-4 border-sky-500">
-                            <h2 class="text-sm font-bold text-slate-500 uppercase mb-4 tracking-widest">${cat}</h2>
-                            <div class="space-y-4">
-                                ${players.map(([name, wins], i) => `
-                                    <div class="flex justify-between items-center ${i===0 ? 'bg-sky-500/5 p-2 rounded' : ''}">
-                                        <span class="font-bold text-sm ${name.toLowerCase()==='jorge'?'text-sky-400':'text-slate-200'}">${i===0?'👑 ':''}${name}</span>
-                                        <span class="font-mono font-bold text-emerald-400 text-sm">${wins} WINS</span>
-                                    </div>
-                                `).join('') || '<p class="text-xs text-slate-600 italic">Sin actividad.</p>'}
+                const sorted = Object.entries(playerStats).sort((a,b) => b[1].totalPts - a[1].totalPts);
+
+                container.innerHTML = sorted.map(([name, stat], i) => {
+                    const topGame = Object.entries(stat.games).sort((a,b) => b[1] - a[1])[0][0];
+                    const isJorge = name.toLowerCase() === 'jorge';
+
+                    return `
+                        <div class="card p-6 border-l-4 ${i===0 ? 'border-yellow-500 bg-yellow-500/5' : 'border-slate-700'} relative overflow-hidden">
+                            ${i===0 ? '<div class="absolute top-0 right-0 bg-yellow-500 text-black font-black text-[10px] px-3 py-1 uppercase">Top Operative</div>' : ''}
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h3 class="text-2xl font-black ${isJorge ? 'text-sky-400' : 'text-white'}">${name.toUpperCase()}</h3>
+                                    <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1 italic">Especialidad: ${topGame}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="stat-value text-3xl text-emerald-400">${stat.totalPts}</p>
+                                    <p class="stat-label">Season Points</p>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-4 border-t border-slate-800 pt-4">
+                                <div>
+                                    <p class="stat-label">Victorias</p>
+                                    <p class="stat-value text-lg text-white">${stat.wins}</p>
+                                </div>
+                                <div>
+                                    <p class="stat-label text-pink-500">Sometimientos</p>
+                                    <p class="stat-value text-lg text-pink-400">${stat.subs}</p>
+                                </div>
                             </div>
                         </div>
                     `;
-                });
-            } catch (e) { container.innerHTML = "<p class='text-red-500'>Error de sincronización.</p>"; }
+                }).join('');
+
+            } catch (e) { container.innerHTML = "<p class='text-red-500 font-mono'>Error: Central Neural Link Offline.</p>"; }
         }
+
         window.onload = loadRankings;
     </script>
 </body>
